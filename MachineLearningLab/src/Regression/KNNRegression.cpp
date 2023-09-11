@@ -29,18 +29,57 @@ void KNNRegression::fit(const std::vector<std::vector<double>>& X_train, const s
 	X_train_ = X_train;
 	y_train_ = y_train;
 }
+std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>>& X_test) const {
+    std::vector<double> y_pred; // Lagra förutsagda värden för alla testdatapunkter
+    y_pred.reserve(X_test.size()); // Reservera minne för y_pred för att undvika frekvent omallokering
+
+    // Kontrollera om träningsdata är tom
+    if (X_train_.empty() || y_train_.empty()) {
+        throw std::runtime_error("Error: Tom träningsdata.");
+    }
+
+    // För varje testdatapunkt
+    for (const auto& x_test : X_test) {
+        // Beräkna avståndet till alla träningsdatapunkter
+        std::vector<std::pair<double, double>> distances; // (avstånd, värde) par
+        for (size_t i = 0; i < X_train_.size(); ++i) {
+            double distance = SimilarityFunctions::euclideanDistance(x_test, X_train_[i]);
+            distances.emplace_back(distance, y_train_[i]);
+        }
+
+        // Sortera avstånden i stigande ordning
+        std::sort(distances.begin(), distances.end(),
+            [](const std::pair<double, double>& a, const std::pair<double, double>& b) {
+                return a.first < b.first;
+            });
+
+        // Hämta de närmaste K grannarna
+        int k = k_; // Använd den K som definierades vid konstruktion
+        double sumOfValues = 0.0;
+        for (int i = 0; i < k; ++i) {
+            sumOfValues += distances[i].second;
+        }
+
+        // Beräkna genomsnittet av värdena för k-närmaste grannar
+        double predictedValue = sumOfValues / k;
+
+        y_pred.push_back(predictedValue);
+    }
+
+    return y_pred; // Returnera vektorn med förutsagda värden för alla testdatapunkter
+}
 
 
 
 /// predict function: Calculates the predicted values for a given set of test data points using KNN Regression. ///
-std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>>& X_test) const {
-	std::vector<double> y_pred; // Store predicted values for all test data points
-	y_pred.reserve(X_test.size()); // Reserve memory for y_pred to avoid frequent reallocation
+//std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>>& X_test) const {
+	//std::vector<double> y_pred; // Store predicted values for all test data points
+	//y_pred.reserve(X_test.size()); // Reserve memory for y_pred to avoid frequent reallocation
 
 	// Check if training data is empty
-	if (X_train_.empty() || y_train_.empty()) {
-		throw std::runtime_error("Error: Empty training data.");
-	}
+	//if (X_train_.empty() || y_train_.empty()) {
+	//	throw std::runtime_error("Error: Empty training data.");
+	//}
 
 	/* Implement the following:
 		--- Loop through each test data point
@@ -53,8 +92,8 @@ std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>
 	//TODO
 
 
-	return y_pred; // Return vector of predicted values for all test data points
-}
+	//return y_pred; // Return vector of predicted values for all test data points
+//}
 
 
 
