@@ -9,3 +9,8 @@ What we see is that with Manhattan we have 96% Accuracy on the **Training Set**,
 
 ##### Value of K?
 First off we tried K = 3 which means that we compare the 3 nearest neighbors. It gave us 97% and 100%, with other K's we are having the same results. 
+
+##### Code explanation
+```cpp
+std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>>& X_test)
+```
