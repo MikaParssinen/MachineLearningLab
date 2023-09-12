@@ -45,8 +45,8 @@ std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>
         // Beräkna avståndet till alla träningsdatapunkter
         std::vector<std::pair<double, double>> distances; // (avstånd, etikett) par
         for (size_t i = 0; i < X_train_.size(); ++i) {
-            //double distance = SimilarityFunctions::euclideanDistance(x_test, X_train_[i]);
-            double distance = SimilarityFunctions::manhattanDistance(x_test, X_train_[i]);
+            double distance = SimilarityFunctions::euclideanDistance(x_test, X_train_[i]);
+            //double distance = SimilarityFunctions::manhattanDistance(x_test, X_train_[i]);
             distances.emplace_back(distance, y_train_[i]);
         }
 

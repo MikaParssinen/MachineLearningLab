@@ -64,6 +64,7 @@ namespace MachineLearningLab {
 			//TODO: Add the constructor code here
 			//
 			KNNClassifier knnClassifier(3);
+			KNNRegression knnRegression(3);
 			
 			
 		}
@@ -1251,7 +1252,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->ClientSize = System::Drawing::Size(1753, 898);
+			this->ClientSize = System::Drawing::Size(1787, 932);
 			this->Controls->Add(this->mainTabControl);
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"MainForm";
