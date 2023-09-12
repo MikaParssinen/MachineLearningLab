@@ -63,7 +63,7 @@ namespace MachineLearningLab {
 			//
 			//TODO: Add the constructor code here
 			//
-			//KNNClassifier knnClassifier(3);
+			KNNClassifier knnClassifier(3);
 			KNNRegression knnRegression(3);
 			
 			
