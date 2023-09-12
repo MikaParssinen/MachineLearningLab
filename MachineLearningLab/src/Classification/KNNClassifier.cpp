@@ -37,7 +37,7 @@ std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>
 
     // Kontrollera om träningsdata är tom
     if (X_train_.empty() || y_train_.empty()) {
-        throw std::runtime_error("Error: Tom träningsdata.");
+        throw std::runtime_error(" Empty training data.");
     }
 
     // För varje testdatapunkt
@@ -47,7 +47,7 @@ std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>
         for (size_t i = 0; i < X_train_.size(); ++i) {
             double distance = SimilarityFunctions::euclideanDistance(x_test, X_train_[i]);
             //double distance = SimilarityFunctions::manhattanDistance(x_test, X_train_[i]);
-            distances.emplace_back(distance, y_train_[i]);
+			distances.emplace_back(distance, y_train_[i]); //Skapar plats för ett nytt element i slutet av vektorn
         }
 
         // Sortera avstånden i stigande ordning
@@ -60,7 +60,7 @@ std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>
         int k = k_; // Använd den K som definierades vid konstruktion
         std::map<double, int> labelCounts; // (etikett, antal) kartläggning
         for (int i = 0; i < k; ++i) {
-            labelCounts[distances[i].second]++;
+			labelCounts[distances[i].second]++; // Öka antalet för den aktuella etiketten
         }
 
         // Hitta den mest frekventa etiketten

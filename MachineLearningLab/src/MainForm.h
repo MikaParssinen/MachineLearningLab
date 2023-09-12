@@ -62,10 +62,7 @@ namespace MachineLearningLab {
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
-			//
-			KNNClassifier knnClassifier(3);
-			KNNRegression knnRegression(3);
-			
+			//			
 			
 		}
 
@@ -1311,7 +1308,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			if (algorithmIndex == 0) {
 				if (value1 != -1) {
 					// KNN Classifier //
-					KNNClassifier knnClassifier(5);
+					KNNClassifier knnClassifier(50);
 
 					// Evaluation //
 
