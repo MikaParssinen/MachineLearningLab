@@ -35,7 +35,7 @@ std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>
 
     // Kontrollera om träningsdata är tom
     if (X_train_.empty() || y_train_.empty()) {
-        throw std::runtime_error("Error: Tom träningsdata.");
+        throw std::runtime_error("Error: Empty training data.");
     }
 
     // För varje testdatapunkt

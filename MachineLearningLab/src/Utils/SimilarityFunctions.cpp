@@ -70,19 +70,7 @@ double SimilarityFunctions::euclideanDistance(const std::vector<double>& a, cons
 	return std::sqrt(dist); // Ta kvadratroten av det ackumulerade avståndet
 }
 
-/*double SimilarityFunctions::euclideanDistance(const std::vector<double>& a, const std::vector<double>& b) {
-	if (a.size() != b.size()) {
-		throw std::invalid_argument("Vectors must be of equal length.");
-	}
-	double dist = 0.0;
 
-	// Compute the Euclidean Distance
-	// TODO
-
-
-	return dist;
-}
-*/
 
 
 /// manhattanDistance function: Calculates the Manhattan distance between two vectors.///
