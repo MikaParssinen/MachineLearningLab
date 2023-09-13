@@ -37,6 +37,17 @@ Målet är att skapa en modell som kan förutsäga vilken kategori eller klass e
 
 
 ##### #KNN 
-Är en instansbaserad inlärningsalgoritm som används i ML. Den lagrar alla tillgängliga fall och klassificerar nya fall baserat på likamått med hjälp av distansen mellan träningsfallen. KNN har funnits sen 1970. Klassifikation och Regression är två olika tillämpningar på KNN, de används för olika problem.  
+Är en instansbaserad inlärningsalgoritm som används i ML. Den lagrar alla tillgängliga fall och klassificerar nya fall baserat på likamått med hjälp av distansen mellan träningsfallen. KNN har funnits sen 1970. Även värt att notera är att den är en #lat algoritm.
+
+
+Klassifikation och Regression är två olika tillämpningar på KNN, de används för olika problem.  
 **Klassifikation** är övervakat lärande där vi vill hitta en etikett tex vad det är för djur eller för blomma.
-**Regression** är också övervakat, men man vill hitta ett kontinuerligt värde. Istället för att räkna antal etiketter i de närmsta grannarna så vill du ta de närmsta grannarna värde och ta medelvärdet av det.
+**Regression** är också övervakat, men man vill hitta ett kontinuerligt värde. Istället för att räkna antal etiketter i de närmsta grannarna så vill du ta de närmsta grannarna värde och ta medelvärdet av det. Regressionen följer 3 steg, Träningsfas, Förutsägelsefas och Beräkna förutsägelse. 
+Kort sagt: 
+Under träningsfasen så får Modellen/algoritmen data med både egenskaper och målvariabler sedan börjar Förutsägelsefas vi en testdata, vi beräknar avståndet mellan denna testdata och varje datapunkt i träningsdatan. Dessa avstånd sorteras sedan i storleksordning och de k närmsta grannarna väljs ut.
+
+
+
+##### #lat 
+En lat algoritm innebär att den skjuter upp beräkningen tills förutsägelsefasen. Vilket skiljer sig ifrån en #Flitig
+
