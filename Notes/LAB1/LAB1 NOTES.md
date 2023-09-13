@@ -7,7 +7,7 @@ What we see is that with Manhattan we have 96% Accuracy on the **Training Set**,
 
 
 
-##### Value of K?
+##### Classification
 Iris data set has 150 individual data. 
 **80/20 split**
 
@@ -29,6 +29,16 @@ K as 50 was a small hit on accuracy not so much that we were hoping on tho..
 And finally K as 100 we see that the accuracy is really bad. 
 
 Conclusion: We should choose a k which is not too small, so we avoid overfitting*. Also we should avoid large K so we avoid underfitting* 
+Smallest K we could choose was 1 and largest was like 119.
+
+
+##### Regression
+
+K = 1![[Skärmbild (11).png]]
+K= 22![[Skärmbild (13).png]]
+K=250![[Skärmbild (15).png]]
+K=400
+![[Skärmbild (17).png]]
 
 ##### Code explanation
 ```cpp
