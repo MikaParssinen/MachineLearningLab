@@ -34,3 +34,9 @@ Handlar om att förutsäga numeriska resultat baserat på tidigare data och skap
 
 ##### #Classification
 Målet är att skapa en modell som kan förutsäga vilken kategori eller klass en given ingångsdata tillhör, baserat på tidigare träningsdata. Klassifikation används för att lösa problem som att  identifiera olika typer av växtarter baserat på bilder eller avgöra om en kund kommer att köpa en produkt eller inte. Det handlar om att sätta saker i rätt klass istället för att förutspå siffror som regression gör, klassifikation är också en övervakad inlärning.
+
+
+##### #KNN 
+Är en instansbaserad inlärningsalgoritm som används i ML. Den lagrar alla tillgängliga fall och klassificerar nya fall baserat på likamått med hjälp av distansen mellan träningsfallen. KNN har funnits sen 1970. Klassifikation och Regression är två olika tillämpningar på KNN, de används för olika problem.  
+**Klassifikation** är övervakat lärande där vi vill hitta en etikett tex vad det är för djur eller för blomma.
+**Regression** är också övervakat, men man vill hitta ett kontinuerligt värde. Istället för att räkna antal etiketter i de närmsta grannarna så vill du ta de närmsta grannarna värde och ta medelvärdet av det.
