@@ -1308,7 +1308,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			if (algorithmIndex == 0) {
 				if (value1 != -1) {
 					// KNN Classifier //
-					KNNClassifier knnClassifier(50);
+					KNNClassifier knnClassifier(11);
 
 					// Evaluation //
 
@@ -1422,7 +1422,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 				if (value1 != -1) {
 
 					// KNN Regression //
-					KNNRegression knnRegression(400);
+					KNNRegression knnRegression(23);
 
 											// Evaluation //
 
