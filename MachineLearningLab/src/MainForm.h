@@ -1422,7 +1422,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 				if (value1 != -1) {
 
 					// KNN Regression //
-					KNNRegression knnRegression(sqrt(505));
+					KNNRegression knnRegression(23);
 
 											// Evaluation //
 
