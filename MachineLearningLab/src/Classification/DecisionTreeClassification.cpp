@@ -99,16 +99,35 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 	// parent loss // You need to caculate entropy using the EntropyFunctions class//
 	double parent_entropy = EntropyFunctions::entropy(y);
 
+
+
+
 	/* Implement the following:
 	   --- generate split
 	   --- compute the weighted avg. of the loss for the children
-	   --- information gain is difference in loss before vs. after split
+	   --- information gain is difference in loss before vs. after split	
 	*/
-	double ig = 0.0;
+
+	for (int i = 0; i < y.size(); i++)
+	{
+		if (X_column[i] <= split_thresh)
+		{
+			std::vector<int> leftVector;
+			leftVector.push_back(i);
+		}
+		else
+		{
+			std::vector<int> rightVector;
+			rightVector.push_back(i);
+		}
+	}
+
+
+	double infogain = 0.0;
 	
 	// TODO
 	
-	return ig;
+	return infogain;
 }
 
 
