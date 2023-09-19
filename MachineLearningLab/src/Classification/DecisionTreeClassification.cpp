@@ -45,8 +45,6 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 }
 
 
-
-
 // Predict is a function that Traverses the decision tree and returns the prediction for a given input vector.//
 //std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
 	//std::vector<double> predictions;
@@ -173,13 +171,39 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 //}
 
 
+
+double DecisionTreeClassification::mostCommonLabel(std::vector<double>& y) {
+    std::unordered_map<double, int> label_counts;
+
+    // Count occurrences of each label
+    for (double label : y) {
+        label_counts[label]++;
+    }
+
+    double most_common_label = y[0];  // Initialize to the first label
+    int max_count = label_counts[y[0]];  // Initialize to the count of the first label
+
+    // Find the most common label
+    for (const auto& entry : label_counts) {
+        if (entry.second > max_count) {
+            most_common_label = entry.first;
+            max_count = entry.second;
+        }
+    }
+
+    return most_common_label;
+}
+
+
+
+
 // mostCommonlLabel function: Finds the most common label in a vector of labels.//
-double DecisionTreeClassification::mostCommonlLabel(std::vector<double>& y) {	
-	double most_common = 0.0;
+//double DecisionTreeClassification::mostCommonlLabel(std::vector<double>& y) {	
+	//double most_common = 0.0;
 	
 	// TODO
-	return most_common;
-}
+	//return most_common;
+//}
 
 
 

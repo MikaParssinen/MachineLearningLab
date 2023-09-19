@@ -66,3 +66,4 @@ Vårat mål är att minska entropin. DVS Göra systemet/algoritmen mer säker oc
 
 Exempel 2: Irisar. 3 olika klasser setosa, versicolor och virginica. Varje observation av en irsisblomma så har du information om fyra egenskaper. När vi pratar om entropi tänker vi på det som måttet på "blandning" av olika klasser i vårat dataset. Desto mer blandade irisblommorna är desto större entropi. Om alla är setosa så är entropin låg.
 
+
