@@ -57,9 +57,55 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 	//return predictions;
 //}
 
+Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
+    int num_samples = X.size();
+    int num_features = X[0].size();
+
+    // Define stopping criteria (for example, if maximum depth or minimum samples is reached)
+    if (depth >= max_depth || num_samples < min_samples_split) {
+        double leaf_value = mostCommonLabel(y); // Assign the most common label as the leaf value
+        return new Node(-1, -1, nullptr, nullptr, leaf_value);
+    }
+
+    double best_gain = -1.0;
+    int best_split_index = -1;
+    double best_split_thresh = -1.0;
+
+    // Loop through each feature and find the best split
+    for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
+        // TODO: Calculate the best split for the current feature and update best_gain, best_split_index, and best_split_thresh
+    }
+
+    // If no split improves entropy (information gain is zero), create a leaf node
+    if (best_gain == 0.0) {
+        double leaf_value = mostCommonLabel(y); // Assign the most common label as the leaf value
+        return new Node(-1, -1, nullptr, nullptr, leaf_value);
+    }
+
+    // Split the data based on the best split
+    std::vector<std::vector<double>> X_left, X_right;
+    std::vector<double> y_left, y_right;
+
+    for (int i = 0; i < num_samples; ++i) {
+        if (X[i][best_split_index] <= best_split_thresh) {
+            X_left.push_back(X[i]);
+            y_left.push_back(y[i]);
+        } else {
+            X_right.push_back(X[i]);
+            y_right.push_back(y[i]);
+        }
+    }
+
+    // Recursively grow the left and right subtrees
+    Node* left_child = growTree(X_left, y_left, depth + 1);
+    Node* right_child = growTree(X_right, y_right, depth + 1);
+
+    return new Node(best_split_index, best_split_thresh, left_child, right_child);
+}
+
 
 // growTree function: This function grows a decision tree using the given data and labelsand  return a pointer to the root node of the decision tree.//
-Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
+//Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	
 	/* Implement the following:
 		--- define stopping criteria
@@ -68,34 +114,63 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 		---grow the children that result from the split
 	*/
 	
-	double best_gain = -1.0; // set the best gain to -1
-	int split_idx = NULL; // split index
-	double split_thresh = NULL; // split threshold
+	//double best_gain = -1.0; // set the best gain to -1
+	//int split_idx = NULL; // split index
+	//double split_thresh = NULL; // split threshold
 	
 	// TODO
 	
-	Node* left; // grow the left tree
-	Node* right;  // grow the right tree
-	return new Node(split_idx, split_thresh, left, right); // return a new node with the split index, split threshold, left tree, and right tree
+	//Node* left; // grow the left tree
+	//Node* right;  // grow the right tree
+	//return new Node(split_idx, split_thresh, left, right); // return a new node with the split index, split threshold, left tree, and right tree
+//}
+
+double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
+    // Calculate parent entropy
+    double parent_entropy = EntropyFunctions::entropy(y);
+
+    int total_samples = y.size();
+    int left_samples = 0, right_samples = 0;
+    std::vector<double> y_left, y_right;
+
+    // Split labels based on the threshold
+    for (size_t i = 0; i < total_samples; ++i) {
+        if (X_column[i] <= split_thresh) {
+            y_left.push_back(y[i]);
+            ++left_samples;
+        } else {
+            y_right.push_back(y[i]);
+            ++right_samples;
+        }
+    }
+
+    // Calculate the weighted average of the entropy for the children
+    double left_entropy = (static_cast<double>(left_samples) / total_samples) * EntropyFunctions::entropy(y_left);
+    double right_entropy = (static_cast<double>(right_samples) / total_samples) * EntropyFunctions::entropy(y_right);
+
+    // Information gain is the difference in entropy before vs. after split
+    double ig = parent_entropy - ((left_samples / static_cast<double>(total_samples)) * left_entropy +
+                                    (right_samples / static_cast<double>(total_samples)) * right_entropy);
+
+    return ig;
 }
 
-
 /// informationGain function: Calculates the information gain of a given split threshold for a given feature column.
-double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
+//double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
 	// parent loss // You need to caculate entropy using the EntropyFunctions class//
-	double parent_entropy = EntropyFunctions::entropy(y);
+	//double parent_entropy = EntropyFunctions::entropy(y);
 
 	/* Implement the following:
 	   --- generate split
 	   --- compute the weighted avg. of the loss for the children
 	   --- information gain is difference in loss before vs. after split
 	*/
-	double ig = 0.0;
+	//double ig = 0.0;
 	
 	// TODO
 	
-	return ig;
-}
+	//return ig;
+//}
 
 
 // mostCommonlLabel function: Finds the most common label in a vector of labels.//
