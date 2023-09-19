@@ -182,8 +182,27 @@ double DecisionTreeClassification::mostCommonlLabel(std::vector<double>& y) {
 }
 
 
-// traverseTree function: Traverses a decision tree given an input vector and a node.//
+
 double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* node) {
+    // If the node is a leaf node, return its value
+    if (node->is_leaf) {
+        return node->value;
+    }
+
+    // Traverse the left subtree if the feature value is less than or equal to the node's threshold
+    if (x[node->feature_index] <= node->threshold) {
+        return traverseTree(x, node->left);
+    } 
+    // Traverse the right subtree if the feature value is greater than the node's threshold
+    else {
+        return traverseTree(x, node->right);
+    }
+}
+
+
+
+// traverseTree function: Traverses a decision tree given an input vector and a node.//
+//double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* node) {
 
 	/* Implement the following:
 		--- If the node is a leaf node, return its value
@@ -192,8 +211,8 @@ double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* no
 	*/
 	// TODO
 	
-	return 0.0;
-}
+	//return 0.0;
+//}
 
 
 /// runDecisionTreeClassification: this function runs the decision tree classification algorithm on the given dataset and 
