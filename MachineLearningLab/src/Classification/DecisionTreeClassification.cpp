@@ -68,7 +68,7 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	
 
-
+	if(depth == 0 || )
 
 
 	/* Implement the following:
