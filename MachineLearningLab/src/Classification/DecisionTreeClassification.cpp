@@ -33,15 +33,29 @@ void DecisionTreeClassification::fit(std::vector<std::vector<double>>& X, std::v
 }
 
 
-// Predict is a function that Traverses the decision tree and returns the prediction for a given input vector.//
 std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
-	std::vector<double> predictions;
+    std::vector<double> predictions;
+
+    for (const auto& sample : X) {
+        double prediction = traverseTree(sample, root);
+        predictions.push_back(prediction);
+    }
+
+    return predictions;
+}
+
+
+
+
+// Predict is a function that Traverses the decision tree and returns the prediction for a given input vector.//
+//std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
+	//std::vector<double> predictions;
 	
 	// Implement the function
 	// TODO
 	
-	return predictions;
-}
+	//return predictions;
+//}
 
 
 // growTree function: This function grows a decision tree using the given data and labelsand  return a pointer to the root node of the decision tree.//
