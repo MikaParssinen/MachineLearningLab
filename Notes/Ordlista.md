@@ -52,8 +52,7 @@ En lat algoritm innebär att den skjuter upp beräkningen tills förutsägelsefa
 En flitig algoritm gör beräkningarna under inlärningen/träningen . Detta är motsatsen från  en "lat" algoritm.  
 
 ##### #Decision-Tree 
-
-
+Uppbyggd av noder. Första noden är Root, andra noder är leaf nod eller en besluts nod. Root representerar alla data, därefter så splittar vi datat. Om vi kommer till en besluts nod så kan vi fortsätta splitta tills vi kommer till en Leaf nod den ska vara fylld med endast en klass. Vi kan även ta bort noder detta heter Pruning.
 ##### #Tröskelvärde
 För att kunna splittra datat vid varje nod måste vi ha ett tröskelvärde, exempel om vi har en egenskap som är längd kan vi dela upp blommorna som är tex kortare än 5cm och de som är större än 5cm. Den delningen kan vi göra med ett tröskelvärde(Threshold). Inom Klassificering kan vi sätta olika gränser mellan olika klasser såsom, spam eller inte spam i mail sammanhang. Där kan ett tröskelvärde vara att mailet innehåller "Gratis". Å därmed separeras data som är spam eller inte spam.
 
