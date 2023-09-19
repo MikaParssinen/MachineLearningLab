@@ -50,3 +50,19 @@ En lat algoritm innebär att den skjuter upp beräkningen tills förutsägelsefa
 
 ##### #Flitig-algoritm
 En flitig algoritm gör beräkningarna under inlärningen/träningen . Detta är motsatsen från  en "lat" algoritm.  
+
+##### #Decision-Tree 
+
+
+##### #Tröskelvärde
+För att kunna splittra datat vid varje nod måste vi ha ett tröskelvärde, exempel om vi har en egenskap som är längd kan vi dela upp blommorna som är tex kortare än 5cm och de som är större än 5cm. Den delningen kan vi göra med ett tröskelvärde(Threshold). Inom Klassificering kan vi sätta olika gränser mellan olika klasser såsom, spam eller inte spam i mail sammanhang. Där kan ett tröskelvärde vara att mailet innehåller "Gratis". Å därmed separeras data som är spam eller inte spam.
+
+##### #Entropi
+Är ett mått på oordning, osäkerthet eller överrasking i ett system. Som en nivå av "röra" eller ''oregelbundhenhet'' i en samling av data.
+
+Exempel: En påse med frukt innehåller bara äpplen, väldigt lätt att gissa vad du skulle få för frukt dvs ingen etropi "Överrasking i systemet". Nu lägg till bananer och apelsiner då blir det mycket svårare att gissa vilken frukt du får. Detta är ett högt entropiscenario "Stor överrasking i systemet".
+
+Vårat mål är att minska entropin. DVS Göra systemet/algoritmen mer säker och få så lite överraskningar som möjligt. Detta gör så att besluten blir mycket bättre.
+
+Exempel 2: Irisar. 3 olika klasser setosa, versicolor och virginica. Varje observation av en irsisblomma så har du information om fyra egenskaper. När vi pratar om entropi tänker vi på det som måttet på "blandning" av olika klasser i vårat dataset. Desto mer blandade irisblommorna är desto större entropi. Om alla är setosa så är entropin låg.
+
