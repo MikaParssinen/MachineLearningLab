@@ -1310,8 +1310,8 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 					// KNN Classifier //
 
 					KNNClassifier knnClassifier(11);
-=======
-					KNNClassifier knnClassifier(sqrt(150));
+
+					
 
 
 					// Evaluation //

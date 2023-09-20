@@ -13,7 +13,7 @@ systemen **ID3** och **C4.5** har blivit formade utan denna algoritm.
 Beslutsträd generas genom upprepad splittring av värden av attributen, denna process kallas för rekursiv partitionering. 
 1. IF, alla instanser i tränings settet till hör samma klass
 2. THEN, returnera värdet av klassen
-3. ELSE, (a) Välj atribut A för att splitta*. (b) Sortera instanserna i tränings settet till delmängder en för varje värde av attribut A. (c) Returnera ett träd med en gren för vare icke tom delmängd, varje gren har ett underträd som avkom, eller en klass värde producerat genom att applicera algoritmen rekursivt.
+3. ELSE, (a) Välj attribut A för att splitta*. (b) Sortera instanserna i tränings settet till delmängder en för varje värde av attribut A. (c) Returnera ett träd med en gren för vare icke tom delmängd, varje gren har ett underträd som avkom, eller en klass värde producerat genom att applicera algoritmen rekursivt.
 *Välj aldrig ett attribut två gånger*
 
 **Förkunskaper av TDIDT**:
@@ -26,8 +26,6 @@ Detta är ett sätt att försäkra sig att tränings datat är konsekvent.
 2. Entropi 
 3. Lens Dataset
 4. Användandet av entropi i väljande av attribut
-
-
 ### **1**. Väljande av attribut
 Det finns tre vanliga sätt att välja attribut utan förkunskap. 
 
