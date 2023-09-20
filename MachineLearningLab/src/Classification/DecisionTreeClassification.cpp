@@ -141,12 +141,16 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 
 
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
+	// Decrement depth at each recursion
+	++depth;
+
 	// Define stopping criteria based on depth or other conditions
-	if (depth <= 0 || X.empty() || y.empty()) {
+	if (depth < 0 || X.empty() || y.empty()) {
 		// Stop growing and return a leaf node with the most common label
 		double leaf_value = mostCommonLabel(y);
 		return new Node(-1, -1, nullptr, nullptr, leaf_value);
 	}
+
 
 	double best_gain = -1.0;
 	int split_idx = -1;
@@ -218,8 +222,8 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 		}
 	}
 
-	Node* left_child = growTree(left_X, left_y, depth - 1);
-	Node* right_child = growTree(right_X, right_y, depth - 1);
+	Node* left_child = growTree(left_X, left_y, depth);  // Increment depth for left subtree
+	Node* right_child = growTree(right_X, right_y, depth);  // Increment depth for right subtree
 
 	return new Node(split_idx, split_thresh, left_child, right_child);
 }
@@ -357,7 +361,7 @@ double DecisionTreeClassification::mostCommonLabel(std::vector<double>& y) {
 //	// TODO
 //	return most_common;
 //}
-
+ 
 
 double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* node) {
 	// If the node is a leaf node, return its value
