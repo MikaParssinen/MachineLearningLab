@@ -20,28 +20,23 @@ double EntropyFunctions::entropy(const std::vector<double>& y) {
 	std::vector<double> hist;
 	std::unordered_map<double, int> label_map;
 	double entropy = 0.0;
-	
 	// Convert labels to unique integers and count their occurrences
 	//TODO
-
 	for (const double& label : y) //Loopar igenom varje label i vector y
 	{
-		if (label_map.find(label) == label_map.end())//Kollar om labeln redan finns i label_map, om denna if-sats är sann så finns den ej då label_map.find(label) returnerar exakt label_map.end() om den inte finns.
+		if (label_map.find(label) == label_map.end())//Kollar om labeln redan finns i label_map, om denna if-sats ï¿½r sann sï¿½ finns den ej dï¿½ label_map.find(label) returnerar exakt label_map.end() om den inte finns.
 		{
-			hist.push_back(label);//vi lägger till den unika labeln i hist som innehåller alla unika labels
-			label_map[label] = 1;//vi sätter även första förekomsten av denna label i label_map till 1 då det är den första förekomsten!
+			hist.push_back(label);//vi lï¿½gger till den unika labeln i hist som innehï¿½ller alla unika labels
+			label_map[label] = 1;//vi sï¿½tter ï¿½ven fï¿½rsta fï¿½rekomsten av denna label i label_map till 1 dï¿½ det ï¿½r den fï¿½rsta fï¿½rekomsten!
 		}
 		else
 		{
-			label_map[label]++;//Om den redan finns så betyder det att vi bara ska öka antalet förekomster av labeln, det betyder även att den finns i hist!
+			label_map[label]++;//Om den redan finns sï¿½ betyder det att vi bara ska ï¿½ka antalet fï¿½rekomster av labeln, det betyder ï¿½ven att den finns i hist!
 		}
 	}
 	
-	
 	// Compute the probability and entropy
-	//TODO
-
-	 
+	//TODO 
 
 	for (const double& label : hist)
 	{
@@ -52,6 +47,9 @@ double EntropyFunctions::entropy(const std::vector<double>& y) {
 
 	return entropy;
 }
+
+
+
 
 
 /// Calculates the entropy of a given set of labels "y" and the indices of the labels "idxs".///

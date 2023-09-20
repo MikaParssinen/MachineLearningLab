@@ -1308,7 +1308,11 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			if (algorithmIndex == 0) {
 				if (value1 != -1) {
 					// KNN Classifier //
+
 					KNNClassifier knnClassifier(11);
+=======
+					KNNClassifier knnClassifier(sqrt(150));
+
 
 					// Evaluation //
 

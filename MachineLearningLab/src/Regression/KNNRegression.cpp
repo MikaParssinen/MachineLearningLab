@@ -70,17 +70,6 @@ std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>
 }
 
 
-
-/// predict function: Calculates the predicted values for a given set of test data points using KNN Regression. ///
-//std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>>& X_test) const {
-	//std::vector<double> y_pred; // Store predicted values for all test data points
-	//y_pred.reserve(X_test.size()); // Reserve memory for y_pred to avoid frequent reallocation
-
-	// Check if training data is empty
-	//if (X_train_.empty() || y_train_.empty()) {
-	//	throw std::runtime_error("Error: Empty training data.");
-	//}
-
 	/* Implement the following:
 		--- Loop through each test data point
 		--- Calculate Euclidean distance between test data point and each training data point
@@ -88,12 +77,8 @@ std::vector<double> KNNRegression::predict(const std::vector<std::vector<double>
 		--- Store sum of y_train values for k-nearest neighbors
 		--- Calculate average of y_train values for k-nearest neighbors
 	*/
-	
-	//TODO
 
 
-	//return y_pred; // Return vector of predicted values for all test data points
-//}
 
 
 

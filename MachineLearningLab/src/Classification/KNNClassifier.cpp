@@ -79,33 +79,12 @@ std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>
     return y_pred; // Returnera vektorn med förutsagda etiketter för alla testdatapunkter
 }
 
-// predict function: Predicts the labels of a given set of test data points using the K-Nearest Neighbors algorithm.//
-/*
-std::vector<double> KNNClassifier::predict(const std::vector<std::vector<double>>& X_test) const {
-	std::vector<double> y_pred; // Store predicted labels for all test data points
-	y_pred.reserve(X_test.size()); // Reserve memory for y_pred to avoid frequent reallocation
-
-	// Check if training data is empty
-	if (X_train_.empty() || y_train_.empty()) {
-		throw std::runtime_error("Error: Empty training data.");
-	}
-
 	/* Implement the following:
 		--- Loop through each test data point
 		--- Calculate Euclidean distance between test data point and each training data point
 		--- Loop through the labels and their counts to find the most frequent label
 		--- Check if predicted label is valid
 	*/
-
-	
-	//TODO
-	
-	//return y_pred; // Return vector of predicted labels for all test data points
-//}
-
-
-
-
 
 
 /// runKNNClassifier: this function runs the KNN classification algorithm on the given dataset and 

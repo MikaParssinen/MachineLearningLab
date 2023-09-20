@@ -37,8 +37,8 @@ void DecisionTreeClassification::fit(std::vector<std::vector<double>>& X, std::v
 std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
 	std::vector<double> predictions;
 	
-	// Implement the function
-	// TODO
+
+	
 	for (const std::vector<double>& input : X) {
 		Node* currNode = root;
 
@@ -59,9 +59,70 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 		}
 	}
 
+
 	
 	return predictions;
 }
+
+
+//Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
+//	int num_samples = X.size();
+//	int num_features = X[0].size();
+//
+//	// Define stopping criteria (for example, if maximum depth or minimum samples is reached)
+//	if (depth >= max_depth || num_samples < min_samples_split || X.empty() || y.empty()) {
+//		double leaf_value = mostCommonLabel(y); // Assign the most common label as the leaf value
+//		return new Node(-1, -1, nullptr, nullptr, leaf_value);
+//	}
+//
+//	double best_gain = -1.0;
+//	int best_split_index = -1;
+//	double best_split_thresh = -1.0;
+
+	// Loop through each feature and find the best split
+//	for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
+//		// TODO: Calculate the best split for the current feature and update best_gain, best_split_index, and best_split_thresh
+//	}
+//
+//	// If no split improves entropy (information gain is zero), create a leaf node
+//	if (best_gain == 0.0) {
+//		double leaf_value = mostCommonLabel(y); // Assign the most common label as the leaf value
+//		return new Node(-1, -1, nullptr, nullptr, leaf_value);
+//	}
+//
+//	// Split the data based on the best split
+//	std::vector<std::vector<double>> X_left, X_right;
+//	std::vector<double> y_left, y_right;
+//
+//	if (best_split_index < num_features && best_split_index >= 0) {
+//		for (int i = 0; i < num_samples; ++i) {
+//			if (X[i][best_split_index] <= best_split_thresh) {
+//				X_left.push_back(X[i]);
+//				y_left.push_back(y[i]);
+//			}
+//			else {
+//				X_right.push_back(X[i]);
+//				y_right.push_back(y[i]);
+//			}
+//		}
+//	}
+//
+//	Node* left_child = nullptr;
+//	Node* right_child = nullptr;
+//
+//	if (!X_left.empty() && !y_left.empty()) {
+//		left_child = growTree(X_left, y_left, depth + 1);
+//	}
+//
+//	if (!X_right.empty() && !y_right.empty()) {
+//		right_child = growTree(X_right, y_right, depth + 1);
+//	}
+//
+//	return new Node(best_split_index, best_split_thresh, left_child, right_child);
+//}
+//
+
+
 
 
 // growTree function: This function grows a decision tree using the given data and labelsand  return a pointer to the root node of the decision tree.//
@@ -86,7 +147,7 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 	int split_idx = NULL; // split index
 	double split_thresh = NULL; // split threshold
 	
-	// TODO
+	 // TODO
 	
 	Node* left; // grow the left tree
 	Node* right;  // grow the right tree
@@ -94,9 +155,10 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 }
 
 
+
 /// informationGain function: Calculates the information gain of a given split threshold for a given feature column.
 double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
-	// parent loss // You need to caculate entropy using the EntropyFunctions class//
+	//parent loss // You need to caculate entropy using the EntropyFunctions class//
 	double parent_entropy = EntropyFunctions::entropy(y);
 
 
@@ -126,18 +188,27 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 	double infogain = 0.0;
 	
 	// TODO
+
 	
 	return infogain;
+
+
+
 }
 
 
+
 // mostCommonlLabel function: Finds the most common label in a vector of labels.//
-double DecisionTreeClassification::mostCommonlLabel(std::vector<double>& y) {	
+double DecisionTreeClassification::mostCommonLabel(std::vector<double>& y) {	
 	double most_common = 0.0;
 	
 	// TODO
 	return most_common;
 }
+
+
+
+
 
 
 // traverseTree function: Traverses a decision tree given an input vector and a node.//
@@ -148,7 +219,7 @@ double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* no
 		--- If the feature value of the input vector is less than or equal to the node's threshold, traverse the left subtree
 		--- Otherwise, traverse the right subtree
 	*/
-	// TODO
+	 //TODO
 	
 	return 0.0;
 }

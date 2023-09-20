@@ -34,3 +34,35 @@ Handlar om att förutsäga numeriska resultat baserat på tidigare data och skap
 
 ##### #Classification
 Målet är att skapa en modell som kan förutsäga vilken kategori eller klass en given ingångsdata tillhör, baserat på tidigare träningsdata. Klassifikation används för att lösa problem som att  identifiera olika typer av växtarter baserat på bilder eller avgöra om en kund kommer att köpa en produkt eller inte. Det handlar om att sätta saker i rätt klass istället för att förutspå siffror som regression gör, klassifikation är också en övervakad inlärning.
+
+
+##### #KNN 
+Är en instansbaserad inlärningsalgoritm som används i ML. Den lagrar alla tillgängliga fall och klassificerar nya fall baserat på likamått med hjälp av distansen mellan träningsfallen. KNN har funnits sen 1970. Även värt att notera är att den är en #lat algoritm.
+
+Klassifikation och Regression är två olika tillämpningar på KNN, de används för olika problem.  
+**Klassifikation** är övervakat lärande där vi vill hitta en etikett tex vad det är för djur eller för blomma.
+**Regression** är också övervakat, men man vill hitta ett kontinuerligt värde. Istället för att räkna antal etiketter i de närmsta grannarna så vill du ta de närmsta grannarna värde och ta medelvärdet av det. Regressionen följer 3 steg, Träningsfas, Förutsägelsefas och Beräkna förutsägelse. 
+Kort sagt: 
+Under träningsfasen så får Modellen/algoritmen data med både egenskaper och målvariabler sedan börjar Förutsägelsefas vi får en testdata, vi beräknar avståndet mellan denna testdata och varje datapunkt i träningsdatan. Slutligen beräknar vi förusägelse vi sorterar varje avstånd  i storleksordning och de k närmsta grannarna väljs ut.  Sedan tar vi medianen på dessa grannar och sätter det värdet till test datat.
+
+##### #lat-algoritm 
+En lat algoritm innebär att den skjuter upp beräkningen tills förutsägelsefasen. Vilket skiljer sig ifrån en flitig algoritm.
+
+##### #Flitig-algoritm
+En flitig algoritm gör beräkningarna under inlärningen/träningen . Detta är motsatsen från  en "lat" algoritm.  
+
+##### #Decision-Tree 
+Uppbyggd av noder. Första noden är Root, andra noder är leaf nod eller en besluts nod. Root representerar alla data, därefter så splittar vi datat. Om vi kommer till en besluts nod så kan vi fortsätta splitta tills vi kommer till en Leaf nod den ska vara fylld med endast en klass. Vi kan även ta bort noder detta heter Pruning.
+##### #Tröskelvärde
+För att kunna splittra datat vid varje nod måste vi ha ett tröskelvärde, exempel om vi har en egenskap som är längd kan vi dela upp blommorna som är tex kortare än 5cm och de som är större än 5cm. Den delningen kan vi göra med ett tröskelvärde(Threshold). Inom Klassificering kan vi sätta olika gränser mellan olika klasser såsom, spam eller inte spam i mail sammanhang. Där kan ett tröskelvärde vara att mailet innehåller "Gratis". Å därmed separeras data som är spam eller inte spam.
+
+##### #Entropi
+Är ett mått på oordning, osäkerthet eller överrasking i ett system. Som en nivå av "röra" eller ''oregelbundhenhet'' i en samling av data.
+
+Exempel: En påse med frukt innehåller bara äpplen, väldigt lätt att gissa vad du skulle få för frukt dvs ingen etropi "Överrasking i systemet". Nu lägg till bananer och apelsiner då blir det mycket svårare att gissa vilken frukt du får. Detta är ett högt entropiscenario "Stor överrasking i systemet".
+
+Vårat mål är att minska entropin. DVS Göra systemet/algoritmen mer säker och få så lite överraskningar som möjligt. Detta gör så att besluten blir mycket bättre.
+
+Exempel 2: Irisar. 3 olika klasser setosa, versicolor och virginica. Varje observation av en irsisblomma så har du information om fyra egenskaper. När vi pratar om entropi tänker vi på det som måttet på "blandning" av olika klasser i vårat dataset. Desto mer blandade irisblommorna är desto större entropi. Om alla är setosa så är entropin låg.
+
+
