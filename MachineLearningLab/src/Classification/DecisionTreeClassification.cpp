@@ -37,8 +37,29 @@ void DecisionTreeClassification::fit(std::vector<std::vector<double>>& X, std::v
 std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
 	std::vector<double> predictions;
 	
-	 //Implement the function
-	 // TODO
+
+	
+	for (const std::vector<double>& input : X) {
+		Node* currNode = root;
+
+		while (!currNode->isLeafNode())
+		{
+			if (input[currNode->feature] <= currNode->threshold)
+			{
+				//Move to left child
+				currNode = currNode->left;
+			}
+			else
+			{
+				//Move to right child
+				currNode = currNode->right;
+				
+			}
+
+		}
+	}
+
+
 	
 	return predictions;
 }
@@ -107,12 +128,20 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 // growTree function: This function grows a decision tree using the given data and labelsand  return a pointer to the root node of the decision tree.//
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	
+
+	if(depth == 0 || )
+
+
 	/* Implement the following:
 		--- define stopping criteria
     	--- Loop through candidate features and potential split thresholds.
 		--- greedily select the best split according to information gain
 		---grow the children that result from the split
 	*/
+
+	
+
+
 	
 	double best_gain = -1.0; // set the best gain to -1
 	int split_idx = NULL; // split index
@@ -132,16 +161,39 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 	//parent loss // You need to caculate entropy using the EntropyFunctions class//
 	double parent_entropy = EntropyFunctions::entropy(y);
 
+
+
+
 	/* Implement the following:
 	   --- generate split
 	   --- compute the weighted avg. of the loss for the children
-	   --- information gain is difference in loss before vs. after split
+	   --- information gain is difference in loss before vs. after split	
 	*/
-	double ig = 0.0;
+
+	for (int i = 0; i < y.size(); i++)
+	{
+		if (X_column[i] <= split_thresh)
+		{
+			std::vector<int> leftVector;
+			leftVector.push_back(i);
+		}
+		else
+		{
+			std::vector<int> rightVector;
+			rightVector.push_back(i);
+		}
+	}
+
+
+	double infogain = 0.0;
 	
 	// TODO
 
-	return ig;
+	
+	return infogain;
+
+
+
 }
 
 
