@@ -30,7 +30,7 @@ private:
 
     Node* growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth = 0);
     double informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh);
-    double mostCommonlLabel(std::vector<double>& y);
+    double mostCommonLabel(std::vector<double>& y);
     double traverseTree(std::vector<double>& x, Node* node);
 
 };
