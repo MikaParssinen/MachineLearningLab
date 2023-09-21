@@ -32,9 +32,6 @@ void DecisionTreeClassification::fit(std::vector<std::vector<double>>& X, std::v
 	root = growTree(X, y); 
 }
 
-
-
-
 // Predict is a function that Traverses the decision tree and returns the prediction for a given input vector.//
 std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
 	std::vector<double> predictions;
