@@ -19,7 +19,7 @@
 
 double EntropyFunctions::entropy(const std::vector<double>& y) {
 	int total_samples = y.size();
-	std::unordered_map<double, int> label_map;
+	std::unordered_map<double, int> label_map; //(label, count)
 	double entropy = 0.0;
 
 	// Count occurrences of each label

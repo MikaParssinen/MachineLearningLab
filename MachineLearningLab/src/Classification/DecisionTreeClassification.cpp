@@ -137,97 +137,149 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 //	return new Node(best_split_index, best_split_thresh, left_child, right_child);
 //}
 //
-
-
-
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
-	// Decrement depth at each recursion
-	++depth;
-
-	// Define stopping criteria based on depth or other conditions
-	if (depth < 0 || X.empty() || y.empty()) {
-		// Stop growing and return a leaf node with the most common label
-		double leaf_value = mostCommonLabel(y);
-		return new Node(-1, -1, nullptr, nullptr, leaf_value);
+	// Define stopping criteria
+	if (depth >= max_depth || X.size() < min_samples_split) {
+		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
 	}
-
 
 	double best_gain = -1.0;
 	int split_idx = -1;
-	double split_thresh = 0.0;
+	double split_thresh = -1.0;
 
-	int num_features = X[0].size();
-
-	// Loop through candidate features and potential split thresholds
-	for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
-		// Get unique values for the current feature
-		std::vector<double> unique_values;
-		for (size_t i = 0; i < X.size(); ++i) {
-			if (std::find(unique_values.begin(), unique_values.end(), X[i][feature_idx]) == unique_values.end()) {
-				unique_values.push_back(X[i][feature_idx]);
-			}
+	// Loop through candidate features and potential split thresholds.
+	for (int i = 0; i < X[0].size(); ++i) {
+		std::vector<double> X_column;
+		for (int k = 0; k < X.size(); ++k) {
+			X_column.push_back(X[k][i]);
 		}
-
-		// Sort unique values
-		std::sort(unique_values.begin(), unique_values.end());
-
-		// Try each unique value as a potential split threshold
-		for (size_t i = 1; i < unique_values.size(); ++i) {
-			double potential_threshold = (unique_values[i - 1] + unique_values[i]) / 2.0;
-
-			// Extract the current feature column
-			std::vector<double> X_column;
-			for (size_t j = 0; j < X.size(); ++j) {
-				X_column.push_back(X[j][feature_idx]);
-			}
-
-			// Split the data based on the current feature and potential threshold
-			std::vector<int> left_indices, right_indices;
-			for (size_t j = 0; j < X.size(); ++j) {
-				if (X[j][feature_idx] <= potential_threshold)
-					left_indices.push_back(j);
-				else
-					right_indices.push_back(j);
-			}
-
-			// Calculate information gain for the potential split
-			double potential_gain = informationGain(y, X_column, potential_threshold);
-
-			// Update best gain and split information if needed
-			if (potential_gain > best_gain) {
-				best_gain = potential_gain;
-				split_idx = feature_idx;
-				split_thresh = potential_threshold;
+		for (int j = 0; j < X.size(); ++j) {
+			double current_gain = informationGain(y, X_column, X[j][i]);
+			if (current_gain > best_gain) {
+				best_gain = current_gain;
+				split_idx = i;
+				split_thresh = X[j][i];
 			}
 		}
 	}
 
 	// Check if no split improves the gain (leaf node)
 	if (best_gain <= 0.0) {
-		return new Node(mostCommonLabel(y));
+		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
 	}
 
-	// Grow the children that result from the best split
-	std::vector<std::vector<double>> left_X, right_X;
-	std::vector<double> left_y, right_y;
+	// Manually split the data based on the chosen threshold
+	std::vector<std::vector<double>> X_left, X_right;
+	std::vector<double> y_left, y_right;
 
-	for (size_t i = 0; i < X.size(); ++i) {
-		if (X[i][split_idx] <= split_thresh) {
-			left_X.push_back(X[i]);
-			left_y.push_back(y[i]);
+	for (int i = 0; i < X.size(); ++i) {
+		if (X[i][split_idx] < split_thresh) {
+			X_left.push_back(X[i]);
+			y_left.push_back(y[i]);
 		}
 		else {
-			right_X.push_back(X[i]);
-			right_y.push_back(y[i]);
+			X_right.push_back(X[i]);
+			y_right.push_back(y[i]);
 		}
 	}
 
-	Node* left_child = growTree(left_X, left_y, depth);  // Increment depth for left subtree
-	Node* right_child = growTree(right_X, right_y, depth);  // Increment depth for right subtree
+	// Grow the children that result from the split
+	Node* left = growTree(X_left, y_left, depth + 1); // grow the left tree
+	Node* right = growTree(X_right, y_right, depth + 1);  // grow the right tree
 
-	return new Node(split_idx, split_thresh, left_child, right_child);
+	return new Node(split_idx, split_thresh, left, right); // return a new node with the split index, split threshold, left tree, and right tree
 }
 
+
+
+
+//Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
+//	
+//
+//	// Define stopping criteria based on depth or other conditions
+//	if (depth < 0 || X.empty() || y.empty()) {
+//		// Stop growing and return a leaf node with the most common label
+//		double leaf_value = mostCommonLabel(y);
+//		return new Node(-1, -1, nullptr, nullptr, leaf_value);
+//	}
+//
+//
+//	double best_gain = -1.0;
+//	int split_idx = -1;
+//	double split_thresh = 0.0;
+//
+//	int num_features = X[0].size();
+//
+//	// Loop through candidate features and potential split thresholds
+//	for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
+//		// Get unique values for the current feature
+//		std::vector<double> unique_values;
+//		for (size_t i = 0; i < X.size(); ++i) {
+//			if (std::find(unique_values.begin(), unique_values.end(), X[i][feature_idx]) == unique_values.end()) {
+//				unique_values.push_back(X[i][feature_idx]);
+//			}
+//		}
+//
+//		// Sort unique values
+//		std::sort(unique_values.begin(), unique_values.end());
+//
+//		// Try each unique value as a potential split threshold
+//		for (size_t i = 1; i < unique_values.size(); ++i) {
+//			double potential_threshold = (unique_values[i - 1] + unique_values[i]) / 2.0;
+//
+//			// Extract the current feature column
+//			std::vector<double> X_column;
+//			for (size_t j = 0; j < X.size(); ++j) {
+//				X_column.push_back(X[j][feature_idx]);
+//			}
+//
+//			// Split the data based on the current feature and potential threshold
+//			std::vector<int> left_indices, right_indices;
+//			for (size_t j = 0; j < X.size(); ++j) {
+//				if (X[j][feature_idx] <= potential_threshold)
+//					left_indices.push_back(j);
+//				else
+//					right_indices.push_back(j);
+//			}
+//
+//			// Calculate information gain for the potential split
+//			double potential_gain = informationGain(y, X_column, potential_threshold);
+//
+//			// Update best gain and split information if needed
+//			if (potential_gain > best_gain) {
+//				best_gain = potential_gain;
+//				split_idx = feature_idx;
+//				split_thresh = potential_threshold;
+//			}
+//		}
+//	}
+//
+//	// Check if no split improves the gain (leaf node)
+//	if (best_gain <= 0.0) {
+//		return new Node(mostCommonLabel(y));
+//	}
+//
+//	// Grow the children that result from the best split
+//	std::vector<std::vector<double>> left_X, right_X;
+//	std::vector<double> left_y, right_y;
+//
+//	for (size_t i = 0; i < X.size(); ++i) {
+//		if (X[i][split_idx] <= split_thresh) {
+//			left_X.push_back(X[i]);
+//			left_y.push_back(y[i]);
+//		}
+//		else {
+//			right_X.push_back(X[i]);
+//			right_y.push_back(y[i]);
+//		}
+//	}
+//
+//	Node* left_child = growTree(left_X, left_y, depth);  // Increment depth for left subtree
+//	Node* right_child = growTree(right_X, right_y, depth);  // Increment depth for right subtree
+//
+//	return new Node(split_idx, split_thresh, left_child, right_child);
+//}
+//
 
 
 // growTree function: This function grows a decision tree using the given data and labelsand  return a pointer to the root node of the decision tree.//

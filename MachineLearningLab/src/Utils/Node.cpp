@@ -9,5 +9,5 @@ Node::Node(int feature, double threshold, Node* left, Node* right, double value)
 
 ///// isLeafNode is a function to check if the node is a leaf node.///
 bool Node::isLeafNode() {
-    return value != -1.0;
+     return value != -1.0;
 }
