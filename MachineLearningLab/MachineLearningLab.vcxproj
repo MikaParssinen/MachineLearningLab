@@ -94,7 +94,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+<<<<<<< Updated upstream
       <AdditionalIncludeDirectories>C:\Users\lbm22005\Documents\eigen-3.4.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>C:\Users\lbm22005\Downloads\eigen-3.4.0</AdditionalIncludeDirectories>
+>>>>>>> Stashed changes
     </ClCompile>
     <Link>
       <AdditionalDependencies />
