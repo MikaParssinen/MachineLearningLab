@@ -49,36 +49,6 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 }
 
 
-// Predict is a function that Traverses the decision tree and returns the prediction for a given input vector.//
-//std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<double>>& X) {
-//	std::vector<double> predictions;
-//	
-//
-//	
-//	for (const std::vector<double>& input : X) {
-//		Node* currNode = root;
-//
-//		while (!currNode->isLeafNode())
-//		{
-//			if (input[currNode->feature] <= currNode->threshold)
-//			{
-//				//Move to left child
-//				currNode = currNode->left;
-//			}
-//			else
-//			{
-//				//Move to right child
-//				currNode = currNode->right;
-//				
-//			}
-//
-//		}
-//	}
-//	return predictions;
-//}
-
-
-
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	// Kontrollera om vi nått maximalt djup eller antalet prov är för få
 	if (depth >= max_depth || X.size() < min_samples_split) {
@@ -145,8 +115,6 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 //		---grow the children that result from the split
 //	*/
 //
-//	
-//	
 //	double best_gain = -1.0; // set the best gain to -1
 //	int split_idx = NULL; // split index
 //	double split_thresh = NULL; // split threshold
@@ -192,9 +160,6 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 //double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
 //	//parent loss // You need to caculate entropy using the EntropyFunctions class//
 //	double parent_entropy = EntropyFunctions::entropy(y);
-//
-//
-//
 //
 //	/* Implement the following:
 //	   --- generate split
