@@ -57,4 +57,13 @@ double EntropyFunctions::entropy(const std::vector<double>& y, const std::vector
 
 
 
-### Information Gain:
+### informationGain():
+
+#### GrowTree():
+Första uppgiften i GrowTree är att definera ett stopp kriterium, när ska vi sluta växa trädet? Det finns några fall när trädet ska sluta växa: 
+1. Antalet fall i noden är mindre än en förutbestämd gräns. Om dett finns för få datapunkter kvar i noden, kan det vara meningslöst att fortsätta dela upp den. 
+2. Renheten i noden överstiger en viss gräns. Om nästan alla datapunkter i noden tillhör samma klass, kan det vara onödigt att fortsätta dela upp den. 
+3. Djupet av noden överstiger en viss gräns. Detta är ett sätt att förhindra att trädet blir för stort och överanpassat.
+4. Prediktorvärderna för alla poster är identiska.
+
+Vad kan våra stopkriterier vara? Jo, vi har ett litet dataset då vill vi ha en en log förut
