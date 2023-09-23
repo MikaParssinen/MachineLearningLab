@@ -50,12 +50,21 @@ std::vector<double> DecisionTreeRegression::predict(std::vector<std::vector<doub
 }
 
 
+
 // growTree function: Grows a decision tree regression model using the given data and parameters //
 Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 
 
 	int split_idx = -1;
 	double split_thresh = 0.0;
+	
+	if (depth >= max_depth) //Här ska vi utöka conditionals. 
+		//regressionen gör på labeln baserat på siffror. En vettig conditional är att se ifall siffrorna i vectorn är någolunda samma vilket kan göra att vi då kan göra en leaf node
+		//exempelvis om 2,4,6,4 finns i vectorn blir produkten 16 och mean blir 4. här ska vi fortsätta skapa decision nodes
+		//MEN: om exempelvis 2,2,3,2,1 finns i vectorn blir produkten 10 och mean = 2 vilket kan göra att vi kan skapa en leaf då mean är samma som majoriteten av siffrorna i vectorn. 
+	{
+
+	}
 
 	/* Implement the following:
 		--- define stopping criteria
