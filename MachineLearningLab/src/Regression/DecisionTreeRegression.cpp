@@ -36,10 +36,33 @@ void DecisionTreeRegression::fit(std::vector<std::vector<double>>& X, std::vecto
 std::vector<double> DecisionTreeRegression::predict(std::vector<std::vector<double>>& X) {
 
 	std::vector<double> predictions;
-	
-	// Implement the function
-	// TODO
-	return predictions;
+    Node* currNode = root;
+
+    for (const std::vector<double>& input : X) {
+
+
+        while (!currNode->isLeafNode())
+        {
+            if (input[currNode->feature] <= currNode->threshold)
+            {
+                //Move to left child
+                currNode = currNode->left;
+            }
+            else
+            {
+                //Move to right child
+                currNode = currNode->right;
+
+            }
+
+        }
+        predictions.push_back(currNode->value); //Put the prediction vale of "currNode" in the predictions vector
+        return predictions;//return the predictions vector
+    }
+
+
+
+
 }
 
 
@@ -68,6 +91,8 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 /// meanSquaredError function: Calculates the mean squared error for a given split threshold.
 double DecisionTreeRegression::meanSquaredError(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
 
+
+    for()
 	double mse = 0.0;
 	
 	// Calculate the mse

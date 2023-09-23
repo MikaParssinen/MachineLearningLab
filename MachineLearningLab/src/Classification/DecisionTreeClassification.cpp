@@ -72,7 +72,7 @@ bool DecisionTreeClassification::allSamplesHaveSameClass(std:: vector<double>& y
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	// Kontrollera om vi n�tt maximalt djup eller antalet prov �r f�r f�
 	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y) == true) {
-		return new Node(0, 0, nullptr, nullptr, mostCommonLabel(y));
+		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
 	}
 
 	double best_gain = -1.0;
@@ -97,7 +97,7 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 
 	// Om ingen uppdelning f�rb�ttrar vinsten, skapa en l�vnode
 	if (best_gain <= 0.0) {
-		return new Node(0, 0, nullptr, nullptr, mostCommonLabel(y));
+		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
 	}
 
 	// Dela upp datan baserat p� vald tr�skel
