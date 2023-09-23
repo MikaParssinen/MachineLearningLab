@@ -34,31 +34,15 @@ void DecisionTreeRegression::fit(std::vector<std::vector<double>>& X, std::vecto
 
 // predict function:Traverses the decision tree and returns the predicted value for a given input vector.//
 std::vector<double> DecisionTreeRegression::predict(std::vector<std::vector<double>>& X) {
-
 	std::vector<double> predictions;
-    Node* currNode = root;
+	for (size_t i = 0; i < X.size(); ++i) {
+		double prediction = traverseTree(X[i], root);  // Assuming 'root' is the root of the decision tree
+		predictions.push_back(prediction);
+	}
 
-    for (const std::vector<double>& input : X) {
+	return predictions;
 
-
-        while (!currNode->isLeafNode())
-        {
-            if (input[currNode->feature] <= currNode->threshold)
-            {
-                //Move to left child
-                currNode = currNode->left;
-            }
-            else
-            {
-                //Move to right child
-                currNode = currNode->right;
-
-            }
-
-        }
-        predictions.push_back(currNode->value); //Put the prediction vale of "currNode" in the predictions vector
-        return predictions;//return the predictions vector
-    }
+    
 
 
 
@@ -91,12 +75,18 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 /// meanSquaredError function: Calculates the mean squared error for a given split threshold.
 double DecisionTreeRegression::meanSquaredError(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
 
-
-    for()
+	double num_of_samples = y.size(); //variabeln sätts till storleken av vector y
 	double mse = 0.0;
-	
-	// Calculate the mse
-	// TODO
+
+	for (int i = 0; i < num_of_samples; i++) //jämför för alla samples i y med alla features i x och vår input parameter split_thresh
+	{
+		double y_value = y[i];//variabeln sätts till värdet av y[i]
+		double feature_comparison = (X_column[i] <= split_thresh) ? 0.0 : 1.0;//"feature_comparison" kommer att få antingen värdet 0.0 eller 1.0 beroende på ifall värdet av x_column[i] är mindre eller större än split_thresh
+		double error_value = (y_value - feature_comparison);//error_value blir lika med differensen av y_value och feature comparison. Alltså vårat error värde
+		mse += error_value * error_value;//enligt formeln för MSE (mean squared error) sätter vi error värdet upphöjt till två
+	}
+    
+	mse = mse / num_of_samples;//returnerar mse efter vi tagit fram mean
 	
 	return mse;
 }
@@ -104,10 +94,15 @@ double DecisionTreeRegression::meanSquaredError(std::vector<double>& y, std::vec
 // mean function: Calculates the mean of a given vector of doubles.//
 double DecisionTreeRegression::mean(std::vector<double>& values) {
 
+	double counter;
+	double num_of_values = values.size();
+	for (int i = 0; i < values.size(); i++)
+	{
+		counter += values[i];
+	}
 	double meanValue = 0.0;
+	meanValue = (counter / num_of_values);
 	
-	// calculate the mean
-	// TODO
 	
 	return meanValue;
 }
@@ -115,14 +110,23 @@ double DecisionTreeRegression::mean(std::vector<double>& values) {
 // traverseTree function: Traverses the decision tree and returns the predicted value for the given input vector.//
 double DecisionTreeRegression::traverseTree(std::vector<double>& x, Node* node) {
 
-	/* Implement the following:
-		--- If the node is a leaf node, return its value
-		--- If the feature value of the input vector is less than or equal to the node's threshold, traverse the left subtree
-		--- Otherwise, traverse the right subtree
-	*/
-	// TODO
+	// If the node is a leaf node, return its value
+	if (node->isLeafNode()) {
+		return node->value;  // Assuming value is the predicted class label for the leaf node
+	}
 
-	return 0.0;
+	// Check the feature value of the input vector
+	double feature_value = x[node->feature];
+
+	// If the feature value is less than or equal to the node's threshold, traverse the left subtree
+	if (feature_value <= node->threshold) {
+		return traverseTree(x, node->left);
+	}
+	// Otherwise, traverse the right subtree
+	else {
+		return traverseTree(x, node->right);
+	}
+	
 }
 
 

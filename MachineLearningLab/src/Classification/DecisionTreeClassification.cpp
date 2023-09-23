@@ -47,7 +47,7 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 
 
 
-bool DecisionTreeClassification::allSamplesHaveSameClass(std:: vector<double>& y)
+bool ::allSamplesHaveSameClass(std:: vector<double>& y)
 {
     if (y.empty())
     {
