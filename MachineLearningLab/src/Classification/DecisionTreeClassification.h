@@ -21,12 +21,13 @@ public:
     std::tuple<double, double, std::vector<double>, std::vector<double>,
         std::vector<double>, std::vector<double>>
         runDecisionTreeClassification(const std::string& filePath, int trainingRatio);
-    bool DecisionTreeClassification ::allSamplesHaveSameClass(std::vector<double>& y);
+    bool allSamplesHaveSameClass(std::vector<double>& y);
     
 
 private:
     int min_samples_split;
     int max_depth;
+
     int n_feats;
     Node* root;
 
