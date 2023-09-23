@@ -59,5 +59,9 @@ double EntropyFunctions::entropy(const std::vector<double>& y, const std::vector
 
 ### informationGain():
 
-#### GrowTree():
-1. Vi tar en en matris X som representerar attributen/egenskaper för varje datapunkt
+### GrowTree()
+1. Vi börjar kontrollera om vi är på max djup eller antal prov är för få. Om något av vilkoren är sant så skapar vi en lövnod som representerar den mest förekommande klassen. 
+2. Hitta bästa uppdelningen, börjar med att loopar igenom varje attribut och försöker hitta den bästa uppdelningen baserat på inforamtionGain(), 
+3. Beräknar infomation gain, med hjälp av funktionen infogain. För 
+
+

@@ -46,40 +46,47 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 }
 
 
-
-bool ::allSamplesHaveSameClass(std:: vector<double>& y)
-{
-    if (y.empty())
-    {
-        return true;
-    }
-
-    double first_class = y[0];
-
-    for (int i = 1; i <= y.size(); i++)
-    {
-        if (y[i] != first_class)
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
+//
+//bool ::allSamplesHaveSameClass(std:: vector<double>& y)
+//{
+//    if (y.empty())
+//    {
+//        return true;
+//    }
+//
+//    double first_class = y[0];
+//
+//    for (int i = 1; i <= y.size(); i++)
+//    {
+//        if (y[i] != first_class)
+//        {
+//            return false;
+//        }
+//    }
+//
+//    return true;
+//}
 
 
 
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
+	
+	
+	//STEG 1
+	
 	// Kontrollera om vi n�tt maximalt djup eller antalet prov �r f�r f�
-	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y) == true) {
-		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
+	if (depth >= max_depth || X.size() < min_samples_split ) {
+		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y)); //Skapar lövnod som representerar den mest förekommande etikett.
 	}
 
-	double best_gain = -1.0;
+
+	//STEG 2:
+
+	double best_gain = -1.0; 
 	int split_idx = -1;
 	double split_thresh = -1.0;
 
-	// Loopa igenom varje funktion och hitta b�sta uppdelning
+	// Loopa igenom varje attribut/längd/egenskap och hitta b�sta uppdelning
 	for (int i = 0; i < X[0].size(); ++i) {
 		std::vector<double> X_column;
 		for (int k = 0; k < X.size(); ++k) {
@@ -89,7 +96,7 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 			double current_gain = informationGain(y, X_column, X[j][i]);
 			if (current_gain > best_gain) {
 				best_gain = current_gain;
-				split_idx = i;
+				split_idx = i; 
 				split_thresh = X[j][i];
 			}
 		}
