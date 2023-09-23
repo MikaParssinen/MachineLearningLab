@@ -21,6 +21,7 @@ public:
     std::tuple<double, double, std::vector<double>, std::vector<double>,
         std::vector<double>, std::vector<double>>
         runDecisionTreeClassification(const std::string& filePath, int trainingRatio);
+    bool ::allSamplesHaveSameClass(std:: vector<double>& y;
     
 
 private:

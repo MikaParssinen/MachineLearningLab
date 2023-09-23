@@ -16,7 +16,7 @@ Iris data set has 150 individual data.
 | Training Acc |   100%  |    99%       |  92%   |  67%   |
 | Test Acc             |  97%   |     100%      |   100%  |  54%   |
 
-**With 70/20** 
+**With 70/30** 
 
 | K          | 1   | 12 | 50  | 100 |
 | ------------ | --- | --------- | --- | --- |
@@ -34,10 +34,31 @@ Smallest K we could choose was 1 and largest was like 119.
 
 ##### Regression
 
+ **Evaluation**
+
+As you can see we have tested using a lot of different values of K. The best one in our opinion is K = 23. This is our chosen value of K since we are using the so called "optimal K value", in which K = sqrt(N), where "N" is the number of samples we have.
+sprt(506) is closer to 22 than to 23. However, we tested both K = 22 and K = 23 and K = 23 came out on top with better results on the evaluation functions "RMSE" & "MAE". The value of "RMSE" is commonly supposed to be close to 0. But in this case we are in a span of 0$ - 10s of thousands of $, which proves that RMSE = 5 is a good value. Same for MAE & R-Squared. 
+
+We can see that the datapoints are very close to eachother when K=22 & K = 23. The other K - values show a wider spread of data points which (to our knowledge) makes the prediction worse in some cases. However, when K = 1 the error function results, display somewhat similar results as when K = 22. For example: 
+
+Smallest and biggest K values:
+
+For example when k = 1 there is a lot of widespread points at the upper right of the graph. Another example is when K=400. Here we can quite easily calculate that the prediction is bad since we are working with around 500 houses and using a K - value that is almost as great as the number of houses we are working with. This leads to brushing every house under one comb which leads to sed horisontal line when K=400 & K=250.  
+
+
+
+  
+
+
+
+
+
 K = 1![[Skärmbild (11).png]]
-K= 22![[Skärmbild (13).png]]
-K=250![[Skärmbild (15).png]]
-K=400
+K = 22![[Skärmbild (13).png]]
+K = 23
+![[Pasted image 20230913191013.png]]
+K = 250![[Skärmbild (15).png]]
+K = 400
 ![[Skärmbild (17).png]]
 
 ##### Code explanation
@@ -106,4 +127,6 @@ Detta är steg för steg hur funktionen predict fungerar
 10. När alla testdatapunkter har bearbetats, returneras `y_pred` som innehåller de förutsagda etiketterna för alla testdatapunkter.
 
 Observera att denna kod antar att `X_train_`, `y_train_`, och `k_` är medlemsvariabler i klassen `KNNClassifier`, och att de har satts någonstans tidigare i koden (troligen i en träningsfunktion som inte visas här)
+
+
 

@@ -46,17 +46,40 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 }
 
 
+
+bool DecisionTreeClassification::allSamplesHaveSameClass(std:: vector<double>& y)
+{
+    if (y.empty())
+    {
+        return true;
+    }
+
+    double first_class = y[0];
+
+    for (int i = 1; i <= y.size(); i++)
+    {
+        if (y[i] != first_class)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
-	// Kontrollera om vi nått maximalt djup eller antalet prov är för få
-	if (depth >= max_depth || X.size() < min_samples_split) {
-		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
+	// Kontrollera om vi nï¿½tt maximalt djup eller antalet prov ï¿½r fï¿½r fï¿½
+	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y) == true) {
+		return new Node(0, 0, nullptr, nullptr, mostCommonLabel(y));
 	}
 
 	double best_gain = -1.0;
 	int split_idx = -1;
 	double split_thresh = -1.0;
 
-	// Loopa igenom varje funktion och hitta bästa uppdelning
+	// Loopa igenom varje funktion och hitta bï¿½sta uppdelning
 	for (int i = 0; i < X[0].size(); ++i) {
 		std::vector<double> X_column;
 		for (int k = 0; k < X.size(); ++k) {
@@ -72,12 +95,12 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 		}
 	}
 
-	// Om ingen uppdelning förbättrar vinsten, skapa en lövnode
+	// Om ingen uppdelning fï¿½rbï¿½ttrar vinsten, skapa en lï¿½vnode
 	if (best_gain <= 0.0) {
-		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
+		return new Node(0, 0, nullptr, nullptr, mostCommonLabel(y));
 	}
 
-	// Dela upp datan baserat på vald tröskel
+	// Dela upp datan baserat pï¿½ vald trï¿½skel
 	std::vector<std::vector<double>> X_left, X_right;
 	std::vector<double> y_left, y_right;
 
@@ -92,7 +115,7 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 		}
 	}
 
-	// Skapa och växträdet för de två delarna
+	// Skapa och vï¿½xtrï¿½det fï¿½r de tvï¿½ delarna
 	Node* left = growTree(X_left, y_left, depth + 1);
 	Node* right = growTree(X_right, y_right, depth + 1);
 
@@ -176,15 +199,15 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 double DecisionTreeClassification::mostCommonLabel(std::vector<double>& y) {
 	std::unordered_map<double, int> label_counts;
 
-	// Räkna förekomst av varje klass
+	// Rï¿½kna fï¿½rekomst av varje klass
 	for (const double& label : y) {
 		label_counts[label]++;
 	}
 
-	double most_common = -1;  // Initialisera med ogiltig värde
+	double most_common = -1;  // Initialisera med ogiltig vï¿½rde
 	int max_count = 0;
 
-	// Hitta den mest förekommande klassen
+	// Hitta den mest fï¿½rekommande klassen
 	for (const auto& pair : label_counts) {
 		if (pair.second > max_count) {
 			max_count = pair.second;
