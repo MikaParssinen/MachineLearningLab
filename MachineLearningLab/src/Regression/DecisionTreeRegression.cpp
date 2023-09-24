@@ -1,4 +1,4 @@
-#include "DecisionTreeRegression.h"
+Ôªø#include "DecisionTreeRegression.h"
 #include "../DataUtils/DataLoader.h"
 #include "../Evaluation/Metrics.h"
 #include "../DataUtils/DataPreprocessor.h"
@@ -14,6 +14,47 @@
 using namespace System::Windows::Forms; // For MessageBox
 
 
+//// Loop through each feature
+//for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
+//	// Get the feature values for the current feature
+//	std::vector<double> feature_values;
+//	for (int i = 0; i < num_samples; ++i) {
+//		feature_values.push_back(X[i][feature_idx]);
+//	}
+
+//	// Sort the feature values
+//	//std::sort(feature_values.begin(), feature_values.end());
+
+//	// Try different split thresholds
+//	for (int i = 0; i < num_samples - 1; ++i) {
+//		double split_thresh = 0.5 * (feature_values[i] + feature_values[i + 1]);
+
+//		// Split the data based on the current split threshold
+//		std::vector<double> left_labels, right_labels;
+//		for (int j = 0; j < num_samples; ++j) {
+//			if (X[j][feature_idx] <= split_thresh) {
+//				left_labels.push_back(y[j]);
+//			}
+//			else {
+//				right_labels.push_back(y[j]);
+//			}
+//		}
+
+//		// Calculate mean squared error for the current split
+//		double mse_split = (left_labels.size() * meanSquaredError(left_labels, left_labels, mean(left_labels)) +
+//			right_labels.size() * meanSquaredError(right_labels, right_labels, mean(right_labels))) /
+//			num_samples;
+
+//		// Update the best split if needed
+//		if (mse_split < best_mse) {
+//			best_mse = mse_split;
+//			best_split_idx = feature_idx;
+//			best_split_thresh = split_thresh;
+//			best_left_labels = left_labels;
+//			best_right_labels = right_labels;
+//		}
+//	}
+//}
 
 ///  DecisionTreeRegression class implementation  ///
 
@@ -30,7 +71,6 @@ void DecisionTreeRegression::fit(std::vector<std::vector<double>>& X, std::vecto
 	n_feats = (n_feats == 0) ? X[0].size() : min(n_feats, static_cast<int>(X[0].size()));
 	root = growTree(X, y);
 }
-
 
 // predict function:Traverses the decision tree and returns the predicted value for a given input vector.//
 std::vector<double> DecisionTreeRegression::predict(std::vector<std::vector<double>>& X) {
@@ -52,63 +92,53 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 		return new Node(-1, -1, nullptr, nullptr, mean(y));
 	}
 
-	double initial_mse = meanSquaredError(y, y, mean(y));
-	double best_mse = initial_mse;
+	
+	double best_mse = DBL_MAX;
 	int best_split_idx = -1;
 	double best_split_thresh = 0.0;
-	std::vector<double> best_left_labels;
-	std::vector<double> best_right_labels;
+	/*std::vector<double> best_left_labels;
+	std::vector<double> best_right_labels;*/
 
-	// Loop through each feature
-	for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
-		// Get the feature values for the current feature
-		std::vector<double> feature_values;
-		for (int i = 0; i < num_samples; ++i) {
-			feature_values.push_back(X[i][feature_idx]);
+
+	// Loopa igenom varje attribut/l√§ngd/egenskap och hitta bÔøΩsta uppdelning
+	for (int i = 0; i < X[0].size(); ++i) {
+		std::vector<double> X_column;
+		for (int k = 0; k < X.size(); ++k) {
+			X_column.push_back(X[k][i]);
 		}
-
-		// Sort the feature values
-		std::sort(feature_values.begin(), feature_values.end());
-
-		// Try different split thresholds
-		for (int i = 0; i < num_samples - 1; ++i) {
-			double split_thresh = 0.5 * (feature_values[i] + feature_values[i + 1]);
-
-			// Split the data based on the current split threshold
-			std::vector<double> left_labels, right_labels;
-			for (int j = 0; j < num_samples; ++j) {
-				if (X[j][feature_idx] <= split_thresh) {
-					left_labels.push_back(y[j]);
-				}
-				else {
-					right_labels.push_back(y[j]);
-				}
-			}
-
-			// Calculate mean squared error for the current split
-			double mse_split = (left_labels.size() * meanSquaredError(left_labels, left_labels, mean(left_labels)) +
-				right_labels.size() * meanSquaredError(right_labels, right_labels, mean(right_labels))) /
-				num_samples;
-
-			// Update the best split if needed
-			if (mse_split < best_mse) {
-				best_mse = mse_split;
-				best_split_idx = feature_idx;
-				best_split_thresh = split_thresh;
-				best_left_labels = left_labels;
-				best_right_labels = right_labels;
+		for (int j = 0; j < X.size(); ++j) {
+			double current_mse = meanSquaredError(y, X_column, X[j][i]);
+			if (current_mse < best_mse) {
+				best_mse = current_mse;
+				best_split_idx = i;
+				best_split_thresh = X[j][i];
 			}
 		}
 	}
 
 	// Check if no split improves MSE
-	if (best_mse == initial_mse) {
+	/*if (best_mse == initial_mse) {
 		return new Node(-1, -1, nullptr, nullptr, mean(y));
+	}*/
+
+	// Dela upp datan baserat pÔøΩ vald trÔøΩskel
+	std::vector<std::vector<double>> X_left, X_right;
+	std::vector<double> y_left, y_right;
+
+	for (int i = 0; i < X.size(); ++i) {
+		if (X[i][best_split_idx] <= best_split_thresh) {
+			X_left.push_back(X[i]);
+			y_left.push_back(y[i]);
+		}
+		else {
+			X_right.push_back(X[i]);
+			y_right.push_back(y[i]);
+		}
 	}
 
 	// Recursively grow the left and right subtrees
-	Node* left_child = growTree(X, best_left_labels, depth + 1);
-	Node* right_child = growTree(X, best_right_labels, depth + 1);
+	Node* left_child = growTree(X_left, y_left, depth + 1);
+	Node* right_child = growTree(X_right, y_right, depth + 1);
 
 	// Create a decision node using the best split
 	return new Node(best_split_idx, best_split_thresh, left_child, right_child);
@@ -143,10 +173,10 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 //	int split_idx = -1;
 //	double split_thresh = 0.0;
 //	
-//	if (depth >= max_depth) //H‰r ska vi utˆka conditionals. 
-//		//regressionen gˆr pÂ labeln baserat pÂ siffror. En vettig conditional ‰r att se ifall siffrorna i vectorn ‰r nÂgolunda samma vilket kan gˆra att vi dÂ kan gˆra en leaf node
-//		//exempelvis om 2,4,6,4 finns i vectorn blir produkten 16 och mean blir 4. h‰r ska vi forts‰tta skapa decision nodes
-//		//MEN: om exempelvis 2,2,3,2,1 finns i vectorn blir produkten 10 och mean = 2 vilket kan gˆra att vi kan skapa en leaf dÂ mean ‰r samma som majoriteten av siffrorna i vectorn. 
+//	if (depth >= max_depth) //H√§r ska vi ut√∂ka conditionals. 
+//		//regressionen g√∂r p√• labeln baserat p√• siffror. En vettig conditional √§r att se ifall siffrorna i vectorn √§r n√•golunda samma vilket kan g√∂ra att vi d√• kan g√∂ra en leaf node
+//		//exempelvis om 2,4,6,4 finns i vectorn blir produkten 16 och mean blir 4. h√§r ska vi forts√§tta skapa decision nodes
+//		//MEN: om exempelvis 2,2,3,2,1 finns i vectorn blir produkten 10 och mean = 2 vilket kan g√∂ra att vi kan skapa en leaf d√• mean √§r samma som majoriteten av siffrorna i vectorn. 
 //	{
 //
 //	}
@@ -171,15 +201,37 @@ double DecisionTreeRegression::meanSquaredError(std::vector<double>& y, std::vec
 	
 	double num_of_samples = y.size();
 	double mse = 0.0;
+	double error_value = 0.0;
 
-	for (int i = 0; i < num_of_samples; i++) {
-		double y_value = y[i];
-		double feature_comparison = (X_column[i] <= split_thresh) ? 0.0 : 1.0;
-		double error_value = (y_value - feature_comparison);
-	
-		mse += error_value * error_value;
+	double feature_comparison_left = 0.0;
+	double feature_comparison_right = 0.0;
+
+	std::vector<double>left;
+	std::vector<double>right;
+	for(int i = 0; i<y.size(); i++)
+	{
+		if(X_column[i] <= split_thresh)
+		{
+			left.push_back(y[i]);
+		}
+		else
+		{
+			right.push_back(y[i]);
+		}
 	}
 
+	feature_comparison_left = mean(left);
+	feature_comparison_right = mean(right);
+
+	for(int i = 0; i < left.size(); i++)
+	{
+		mse += (left[i] - feature_comparison_left) * (left[i] - feature_comparison_left);
+	}
+
+	for(int i = 0; i<right.size(); i++)
+	{
+		mse += (right[i] - feature_comparison_right) * (right[i] - feature_comparison_right);
+	}
 	mse = mse / num_of_samples;
 	return mse;
 }

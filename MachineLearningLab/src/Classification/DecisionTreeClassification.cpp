@@ -46,7 +46,6 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 }
 
 
-
 bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
 {
     if (y.empty())
@@ -56,7 +55,7 @@ bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
 
     double first_class = y[0];
 
-    for (int i = 1; i <= y.size(); i++)
+    for (int i = 0; i < y.size(); i++)
     {
         if (y[i] != first_class)
         {
@@ -68,14 +67,14 @@ bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
 }
 
 
-
+// allSamplesHaveSameClass(y) == true)
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	
 	
 	//STEG 1
 	
 	// Kontrollera om vi n�tt maximalt djup eller antalet prov �r f�r f�
-	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y)==true) {
+	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y) == true ) {
 		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y)); //Skapar lövnod som representerar den mest förekommande etikett.
 	}
 
@@ -326,7 +325,3 @@ DecisionTreeClassification::runDecisionTreeClassification(const std::string& fil
 	}
 }
 
-bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
-{
-	return false;
-}
