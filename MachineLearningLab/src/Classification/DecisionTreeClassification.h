@@ -15,7 +15,7 @@
 
 class DecisionTreeClassification {
 public:
-    DecisionTreeClassification(int min_samples_split = 2, int max_depth = 100, int n_feats = NULL);
+    DecisionTreeClassification(int min_samples_split = 10, int max_depth = 100, int n_feats = NULL);
     void fit(std::vector<std::vector<double>>& X, std::vector<double>& y);
     std::vector<double> predict(std::vector<std::vector<double>>& X);
     std::tuple<double, double, std::vector<double>, std::vector<double>,
