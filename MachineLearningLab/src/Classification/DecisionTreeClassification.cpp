@@ -67,12 +67,13 @@ bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
 }
 
 
-// allSamplesHaveSameClass(y) == true)
+
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 	
 	
 	//STEG 1
 	
+	// Define stopping criteria
 	// Kontrollera om vi n�tt maximalt djup eller antalet prov �r f�r f�
 	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y) == true ) {
 		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y)); //Skapar lövnod som representerar den mest förekommande etikett.
@@ -85,6 +86,10 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 	int split_idx = -1;
 	double split_thresh = -1.0;
 
+
+
+	// Loop through candidate features and potential split thresholds.
+	
 	// Loopa igenom varje attribut/längd/egenskap och hitta b�sta uppdelning
 	for (int i = 0; i < X[0].size(); ++i) {
 		std::vector<double> X_column;
@@ -92,6 +97,7 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 			X_column.push_back(X[k][i]);
 		}
 		for (int j = 0; j < X.size(); ++j) {
+			// Greedily select the best split according to information gain
 			double current_gain = informationGain(y, X_column, X[j][i]);
 			if (current_gain > best_gain) {
 				best_gain = current_gain;
@@ -106,7 +112,9 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y));
 	}
 
-	// Dela upp datan baserat p� vald tr�skel
+	// Split data on the best feature/threshold obtained from the above greedy search
+	
+	 // Dela upp datan baserat p� vald tr�skel
 	std::vector<std::vector<double>> X_left, X_right;
 	std::vector<double> y_left, y_right;
 
@@ -121,6 +129,8 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 		}
 	}
 
+	// Grow the children that result from the split
+	
 	// Skapa och v�xtr�det f�r de tv� delarna
 	Node* left = growTree(X_left, y_left, depth + 1);
 	Node* right = growTree(X_right, y_right, depth + 1);
@@ -128,29 +138,6 @@ Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, 
 	// Returnera en ny nod med uppdelningsinformationen
 	return new Node(split_idx, split_thresh, left, right);
 }
-
-// growTree function: This function grows a decision tree using the given data and labelsand  return a pointer to the root node of the decision tree.//
-//Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
-//	
-//
-//
-//	/* Implement the following:
-//		--- define stopping criteria
-//    	--- Loop through candidate features and potential split thresholds.
-//		--- greedily select the best split according to information gain
-//		---grow the children that result from the split
-//	*/
-//
-//	double best_gain = -1.0; // set the best gain to -1
-//	int split_idx = NULL; // split index
-//	double split_thresh = NULL; // split threshold
-//	
-//	 // TODO
-//	
-//	Node* left; // grow the left tree
-//	Node* right;  // grow the right tree
-//	return new Node(split_idx, split_thresh, left, right); // return a new node with the split index, split threshold, left tree, and right tree
-//}
 
 double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
 	

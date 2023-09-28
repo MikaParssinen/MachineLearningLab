@@ -14,49 +14,7 @@
 using namespace System::Windows::Forms; // For MessageBox
 
 
-//// Loop through each feature
-//for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
-//	// Get the feature values for the current feature
-//	std::vector<double> feature_values;
-//	for (int i = 0; i < num_samples; ++i) {
-//		feature_values.push_back(X[i][feature_idx]);
-//	}
 
-//	// Sort the feature values
-//	//std::sort(feature_values.begin(), feature_values.end());
-
-//	// Try different split thresholds
-//	for (int i = 0; i < num_samples - 1; ++i) {
-//		double split_thresh = 0.5 * (feature_values[i] + feature_values[i + 1]);
-
-//		// Split the data based on the current split threshold
-//		std::vector<double> left_labels, right_labels;
-//		for (int j = 0; j < num_samples; ++j) {
-//			if (X[j][feature_idx] <= split_thresh) {
-//				left_labels.push_back(y[j]);
-//			}
-//			else {
-//				right_labels.push_back(y[j]);
-//			}
-//		}
-
-//		// Calculate mean squared error for the current split
-//		double mse_split = (left_labels.size() * meanSquaredError(left_labels, left_labels, mean(left_labels)) +
-//			right_labels.size() * meanSquaredError(right_labels, right_labels, mean(right_labels))) /
-//			num_samples;
-
-//		// Update the best split if needed
-//		if (mse_split < best_mse) {
-//			best_mse = mse_split;
-//			best_split_idx = feature_idx;
-//			best_split_thresh = split_thresh;
-//			best_left_labels = left_labels;
-//			best_right_labels = right_labels;
-//		}
-//	}
-//}
-
-///  DecisionTreeRegression class implementation  ///
 
 
 // Constructor for DecisionTreeRegression class.//
@@ -96,7 +54,7 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 	double best_mse = DBL_MAX;
 	int best_split_idx = -1;
 	double best_split_thresh = 0.0;
-	/*std::vector<double> best_left_labels;
+	/*std::vector<double> best_left_labels; 
 	std::vector<double> best_right_labels;*/
 
 
