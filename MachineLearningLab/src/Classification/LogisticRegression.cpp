@@ -52,6 +52,8 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
     // Initialize weights for each class
     std::vector<std::vector<double>> weights(num_classes, std::vector<double>(num_features + 1, 0.0)); // +1 for bias
 
+
+   // Loop over training epochs
     for (int epoch = 0; epoch < num_epochs; epoch++) {
         for (int i = 0; i < num_samples; i++) {
             // Add bias term to the training example
@@ -112,7 +114,7 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
             }
 
             // Predict class label with the highest score
-            if (score > max_score) {
+            if (score >= max_score) {
                 max_score = score;
                 predicted_class = static_cast<int>(c);  // Convert size_t to int
             }
