@@ -25,40 +25,122 @@ LogisticRegression::LogisticRegression(double learning_rate, int num_epochs)
     : learning_rate(learning_rate), num_epochs(num_epochs) {}
 
 // Fit method for training the logistic regression model
+//void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& y_train) {
+//    int num_features = X_train[0].size();
+//    int num_classes = std::set<double>(y_train.begin(), y_train.end()).size();
+//
+//
+//	/* Implement the following:
+//       	--- Initialize weights for each class
+//    	--- Loop over each class label
+//    	--- Convert the problem into a binary classification problem
+//        --- Loop over training epochs
+//       	--- Add bias term to the training example
+//    	--- Calculate weighted sum of features
+//        --- Calculate the sigmoid of the weighted sum
+//        --- Update weights using gradient descent
+//    */
+//    
+//    // TODO
+//}
+
 void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& y_train) {
+    int num_samples = X_train.size();
     int num_features = X_train[0].size();
     int num_classes = std::set<double>(y_train.begin(), y_train.end()).size();
 
+    // Initialize weights for each class
+    std::vector<std::vector<double>> weights(num_classes, std::vector<double>(num_features + 1, 0.0)); // +1 for bias
 
-	/* Implement the following:
-       	--- Initialize weights for each class
-    	--- Loop over each class label
-    	--- Convert the problem into a binary classification problem
-        --- Loop over training epochs
-       	--- Add bias term to the training example
-    	--- Calculate weighted sum of features
-        --- Calculate the sigmoid of the weighted sum
-        --- Update weights using gradient descent
-    */
-    
-    // TODO
+    for (int epoch = 0; epoch < num_epochs; epoch++) {
+        for (int i = 0; i < num_samples; i++) {
+            // Add bias term to the training example
+            std::vector<double> input_with_bias = X_train[i];
+            input_with_bias.push_back(1.0); // Adding bias
+
+            // Convert the problem into a binary classification problem for each class
+            for (int c = 0; c < num_classes; c++) {
+                int y_binary = (y_train[i] == c) ? 1 : 0; // 1 if class matches, 0 otherwise
+
+                // Calculate weighted sum of features
+                double weighted_sum = 0.0;
+                for (int j = 0; j < num_features + 1; j++) {
+                    weighted_sum += weights[c][j] * input_with_bias[j];
+                }
+
+                // Calculate the sigmoid of the weighted sum
+                double sigmoid_result = 1.0 / (1.0 + exp(-weighted_sum));
+
+                // Calculate the error (difference between predicted and actual)
+                double error = sigmoid_result - y_binary;
+
+                // Update weights using gradient descent
+                for (int j = 0; j < num_features + 1; j++) {
+                    // Calculate the gradient for this weight
+                    double gradient = error * input_with_bias[j];
+
+                    // Update the weight using gradient descent
+                    weights[c][j] -= learning_rate * gradient;
+                }
+            }
+        }
+    }
+
+    // Store the computed weights for prediction
+    this->weights = weights;
 }
 
-// Predict method to predict class labels for test data
+
+
+
 std::vector<double> LogisticRegression::predict(const std::vector<std::vector<double>>& X_test) {
     std::vector<double> predictions;
-    
-    /* Implement the following:
-    	--- Loop over each test example
-        --- Add bias term to the test example
-        --- Calculate scores for each class by computing the weighted sum of features
-        --- Predict class label with the highest score
-    */
-      
-    // TODO
-    
+
+    for (const auto& input : X_test) {
+        std::vector<double> input_with_bias = input;
+        input_with_bias.push_back(1.0); // Adding bias
+
+        // Initialize max_score and predicted_class appropriately for each input
+        double max_score = -std::numeric_limits<double>::infinity();
+        int predicted_class = -1;
+
+        // Calculate scores for each class by computing the weighted sum of features
+        for (size_t c = 0; c < weights.size(); c++) {
+            double score = 0.0;
+            for (size_t j = 0; j < weights[c].size(); j++) {
+                score += weights[c][j] * input_with_bias[j];
+            }
+
+            // Predict class label with the highest score
+            if (score > max_score) {
+                max_score = score;
+                predicted_class = static_cast<int>(c);  // Convert size_t to int
+            }
+        }
+
+        predictions.push_back(predicted_class);
+    }
+
     return predictions;
 }
+
+
+//
+//// Predict method to predict class labels for test data
+//std::vector<double> LogisticRegression::predict(const std::vector<std::vector<double>>& X_test) {
+//    std::vector<double> predictions;
+//    
+//    /* Implement the following:
+//    	--- Loop over each test example
+//        --- Add bias term to the test example
+//        --- Calculate scores for each class by computing the weighted sum of features
+//        --- Predict class label with the highest score
+//    */
+//      
+//    // TODO
+//    
+//    return predictions;
+//}
 
 /// runLogisticRegression: this function runs the logistic regression algorithm on the given dataset and 
 /// then returns a tuple containing the evaluation metrics for the training and test sets, 
