@@ -65,24 +65,30 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
                 int y_binary = (y_train[i] == c) ? 1 : 0; // 1 if class matches, 0 otherwise
 
                 // Calculate weighted sum of features
-                double weighted_sum = 0.0;
-                for (int j = 0; j < num_features + 1; j++) {
-                    weighted_sum += weights[c][j] * input_with_bias[j];
+                double weighted_sum = weights[c][0];
+                for (int j = 0; j < num_features; j++) {
+
+                    weighted_sum += weights[c][j+1] * input_with_bias[j];
                 }
 
                 // Calculate the sigmoid of the weighted sum
-                double sigmoid_result = 1.0 / (1.0 + exp(-weighted_sum));
+                double sigmoid_result = sigmoid(weighted_sum);
+               
+                
+                // double sigmoid_result = 1.0 / (1.0 + exp(-weighted_sum));
 
                 // Calculate the error (difference between predicted and actual)
                 double error = sigmoid_result - y_binary;
+                double gradient = error;
+                weights[c][0] -= learning_rate * gradient;
 
                 // Update weights using gradient descent
-                for (int j = 0; j < num_features + 1; j++) {
+                for (int j = 0; j < num_features; j++) {
                     // Calculate the gradient for this weight
-                    double gradient = error * input_with_bias[j];
+                    gradient = error * input_with_bias[j];
 
                     // Update the weight using gradient descent
-                    weights[c][j] -= learning_rate * gradient;
+                    weights[c][j+1] -= learning_rate * gradient;
                 }
             }
         }
@@ -114,9 +120,9 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
             }
 
             // Predict class label with the highest score
-            if (score >= max_score) {
+            if (score > max_score) {
                 max_score = score;
-                predicted_class = static_cast<int>(c);  // Convert size_t to int
+                predicted_class = static_cast<int>(c+1);  // Convert size_t to int
             }
         }
 
