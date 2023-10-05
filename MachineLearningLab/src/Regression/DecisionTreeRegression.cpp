@@ -102,57 +102,6 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 	return new Node(best_split_idx, best_split_thresh, left_child, right_child);
 }
 
-//Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
-//
-//
-//	int split_idx = -1;
-//	double split_thresh = 0.0;
-//
-//
-//	/* Implement the following:
-//		--- define stopping criteria
-//		--- Loop through candidate features and potential split thresholds.
-//		--- Find the best split threshold for the current feature.
-//		--- grow the children that result from the split
-//	*/
-//
-//	// TODO
-//
-//	Node* left;
-//	Node* right;
-//	return new Node(split_idx, split_thresh, left, right); // return a new node with the split index, split threshold, left tree, and right tree
-//}
-
-//
-//// growTree function: Grows a decision tree regression model using the given data and parameters //
-//Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
-//
-//
-//	int split_idx = -1;
-//	double split_thresh = 0.0;
-//	
-//	if (depth >= max_depth) //Här ska vi utöka conditionals. 
-//		//regressionen gör på labeln baserat på siffror. En vettig conditional är att se ifall siffrorna i vectorn är någolunda samma vilket kan göra att vi då kan göra en leaf node
-//		//exempelvis om 2,4,6,4 finns i vectorn blir produkten 16 och mean blir 4. här ska vi fortsätta skapa decision nodes
-//		//MEN: om exempelvis 2,2,3,2,1 finns i vectorn blir produkten 10 och mean = 2 vilket kan göra att vi kan skapa en leaf då mean är samma som majoriteten av siffrorna i vectorn. 
-//	{
-//
-//	}
-//
-//	/* Implement the following:
-//		--- define stopping criteria
-//    	--- Loop through candidate features and potential split thresholds.
-//		--- Find the best split threshold for the current feature.
-//		--- grow the children that result from the split
-//	*/
-//	
-//	// TODO
-//
-//	Node* left;
-//	Node* right;
-//	return new Node(split_idx, split_thresh, left, right); // return a new node with the split index, split threshold, left tree, and right tree
-//}
-
 
 /// meanSquaredError function: Calculates the mean squared error for a given split threshold.
 double DecisionTreeRegression::meanSquaredError(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
