@@ -49,10 +49,59 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
     int num_features = X_train[0].size();
     int num_classes = std::set<double>(y_train.begin(), y_train.end()).size();
 
-    // Initialize weights for each class
-    std::vector<std::vector<double>> weights(num_classes, std::vector<double>(num_features + 1, 0.0)); // +1 for bias
+    
+   
+    for (int i = 0; i < num_classes; i++)
+    {
+        // Initialize weights for each class
+        std::vector<double> weight_vector(num_features + 1, 0.0); // +1 for bias
+        for (int epoch = 0; epoch < num_epochs; epoch++)
+        {
+            
+            std::vector<double> Gradient_vector(num_features + 1, 0.0);
+            for (int samples = 0; samples < num_samples; samples++)
+            {
+                int y_binary = (y_train[samples] == i+1) ? 1 : 0; // 1 if class matches, 0 otherwise
+                std::vector<double> input_with_bias = X_train[samples];
+                input_with_bias.push_back(1.0); // Adding bias
+                double weighted_sum = weight_vector[0];
+
+                for (int features = 0; features < num_features; features++)
+                {
+                    weighted_sum += weight_vector[features + 1] * input_with_bias[features];
+                }
+
+                // Calculate the sigmoid of the weighted sum
+                double sigmoid_result = sigmoid(weighted_sum);
+                
+                double error = sigmoid_result - y_binary;
+
+                Gradient_vector[0] += error * 1.0; //Form av derivata
+                
+                for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++)
+                {
+                    Gradient_vector[gradient_calc + 1] += error * input_with_bias[gradient_calc];
+                }
+
+            }
 
 
+            for (int w = 0; w <= num_features; w++)
+            {
+                weight_vector[w] -= learning_rate * (Gradient_vector[w] / num_samples);
+             
+            }
+
+
+            
+
+
+        }
+
+        weights.push_back(weight_vector);
+    }
+
+    /*
    // Loop over training epochs
     for (int epoch = 0; epoch < num_epochs; epoch++) {
         for (int i = 0; i < num_samples; i++) {
@@ -79,10 +128,20 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
 
                 // Calculate the error (difference between predicted and actual)
                 double error = sigmoid_result - y_binary;
+                 
                 double gradient = error;
                 weights[c][0] -= learning_rate * gradient;
 
+
+                /*
+                for (int j = 0; j < num_features + 1; ++j) {
+                    weights[c][j] -= learning_rate * (error) * input_with_bias[j];
+                }
+                */
+
                 // Update weights using gradient descent
+                
+                /*
                 for (int j = 0; j < num_features; j++) {
                     // Calculate the gradient for this weight
                     gradient = error * input_with_bias[j];
@@ -90,12 +149,14 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
                     // Update the weight using gradient descent
                     weights[c][j+1] -= learning_rate * gradient;
                 }
+                
             }
         }
     }
 
     // Store the computed weights for prediction
     this->weights = weights;
+    */
 }
 
 
@@ -105,8 +166,8 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
     std::vector<double> predictions;
 
     for (const auto& input : X_test) {
-        std::vector<double> input_with_bias = input;
-        input_with_bias.push_back(1.0); // Adding bias
+        //std::vector<double> input_with_bias = input;
+        //input_with_bias.push_back(1.0); // Adding bias
 
         // Initialize max_score and predicted_class appropriately for each input
         double max_score = -std::numeric_limits<double>::infinity();
@@ -114,15 +175,19 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
 
         // Calculate scores for each class by computing the weighted sum of features
         for (size_t c = 0; c < weights.size(); c++) {
-            double score = 0.0;
-            for (size_t j = 0; j < weights[c].size(); j++) {
-                score += weights[c][j] * input_with_bias[j];
+            double score = weights[c][0];
+            for (size_t j = 0; j < weights[c].size()-1; j++) {
+                score += weights[c][j+1] * input[j];
             }
 
             // Predict class label with the highest score
+            score = sigmoid(score);
             if (score > max_score) {
                 max_score = score;
                 predicted_class = static_cast<int>(c+1);  // Convert size_t to int
+                
+                
+                
             }
         }
 

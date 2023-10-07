@@ -94,7 +94,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\mpn21018\Downloads\eigen-3.4.0\eigen-3.4.0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\louis\OneDrive\Dokument\Machine Learning - Liam &amp; Mika\ML Lab Mika &amp; Liam\MachineLearningLab\MachineLearningLab\eigen-3.4.0;C:\Users\louis\Downloads\eigen-3.4.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
