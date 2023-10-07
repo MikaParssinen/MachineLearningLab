@@ -95,9 +95,13 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <AdditionalIncludeDirectories>C:\Users\lbm22005\Documents\eigen-3.4.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 =======
       <AdditionalIncludeDirectories>C:\Users\lbm22005\Downloads\eigen-3.4.0</AdditionalIncludeDirectories>
+>>>>>>> Stashed changes
+=======
+      <AdditionalIncludeDirectories>C:\Users\louis\OneDrive\Dokument\Machine Learning - Liam &amp; Mika\MachineLearningLab\MachineLearningLab\eigen-3.4.0;C:\Users\mika7\Downloads\eigen-3.4.0\eigen-3.4.0</AdditionalIncludeDirectories>
 >>>>>>> Stashed changes
     </ClCompile>
     <Link>

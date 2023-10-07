@@ -47,8 +47,19 @@ std::vector<double> DecisionTreeRegression::predict(std::vector<std::vector<doub
 Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
 
 
+<<<<<<< Updated upstream
 	int split_idx = -1;
 	double split_thresh = 0.0;
+=======
+	
+
+	double initial_mse = meanSquaredError(y, y, mean(y));
+	double best_mse = initial_mse;
+	int best_split_idx = -1;
+	double best_split_thresh = 0.0;
+	std::vector<double> best_left_labels;
+	std::vector<double> best_right_labels;
+>>>>>>> Stashed changes
 
 	/* Implement the following:
 		--- define stopping criteria
@@ -69,6 +80,15 @@ Node* DecisionTreeRegression::growTree(std::vector<std::vector<double>>& X, std:
 double DecisionTreeRegression::meanSquaredError(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
 
 	double mse = 0.0;
+<<<<<<< Updated upstream
+=======
+	double error_value = 0.0;
+
+	for (int i = 0; i < num_of_samples; i++) {
+		double y_value = y[i];
+		double feature_comparison = (X_column[i] <= split_thresh) ? 0.0 : 1.0;
+		error_value = (y_value - feature_comparison);
+>>>>>>> Stashed changes
 	
 	// Calculate the mse
 	// TODO

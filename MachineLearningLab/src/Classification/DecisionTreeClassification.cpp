@@ -79,6 +79,7 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 //	int best_split_index = -1;
 //	double best_split_thresh = -1.0;
 
+<<<<<<< Updated upstream
 	// Loop through each feature and find the best split
 //	for (int feature_idx = 0; feature_idx < num_features; ++feature_idx) {
 //		// TODO: Calculate the best split for the current feature and update best_gain, best_split_index, and best_split_thresh
@@ -121,6 +122,28 @@ std::vector<double> DecisionTreeClassification::predict(std::vector<std::vector<
 //	return new Node(best_split_index, best_split_thresh, left_child, right_child);
 //}
 //
+=======
+bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
+{
+    if (y.empty())
+    {
+        return true;
+    }
+
+    double first_class = y[0];
+
+    for (int i = 0; i < y.size(); i++)
+    {
+        if (y[i] != first_class)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+>>>>>>> Stashed changes
 
 
 <<<<<<< Updated upstream
