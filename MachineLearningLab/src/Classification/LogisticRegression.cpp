@@ -187,7 +187,6 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
                 predicted_class = static_cast<int>(c+1);  // Convert size_t to int
                 
                 
-                
             }
         }
 
