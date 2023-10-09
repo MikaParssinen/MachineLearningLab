@@ -14,7 +14,7 @@
 
 class LogisticRegression {
 public:
-    LogisticRegression(double learning_rate = 0.05, int num_epochs = 1000);
+    LogisticRegression(double learning_rate = 0.05, int num_epochs = 100);
     void fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& y_train);
     std::vector<double> predict(const std::vector<std::vector<double>>& X_test);
     std::tuple<double, double,

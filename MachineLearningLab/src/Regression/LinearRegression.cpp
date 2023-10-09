@@ -48,23 +48,25 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
         }
 
         //Calculate the coefficients using gradient decent method and store them for future predictions
-        //theta = Eigen::VectorXd::Zero(trainData[0].size());
-        theta = Eigen::VectorXd::Zero(trainData[0].size());
+        // Initialize coefficients to zero
+        Eigen::MatrixXd B = Eigen::MatrixXd::Zero(trainData[0].size(), 1);
 
-        // Gradient Descent
         for (int iter = 0; iter < num_iterations; iter++) {
-            Eigen::VectorXd predictions = X * theta;
-            Eigen::VectorXd errors = predictions - Y;
-            Eigen::VectorXd gradient = (X.transpose() * errors) / Y.size();
+            // Calculate the hypothesis h = X * B
+            Eigen::MatrixXd h = X * B;
 
-            // Update theta element-wise
-            for (int i = 0; i < theta.size(); i++) {
-                if (i < gradient.size())  // Check if i is within the valid range for gradient
-                    theta(i) -= learning_rate * gradient(i);
-            }
+            // Calculate the loss = h - Y and gradient = X' * loss
+            Eigen::MatrixXd loss = h - Y;
+            Eigen::MatrixXd gradient = X.transpose() * loss;
+
+            // Update the coefficients B = B - alpha * gradient
+            B = B - learning_rate * gradient;
         }
-    	m_coefficients = theta;
-    
+
+        // Store the coefficients for future predictions
+        m_coefficients = B;
+
+ 
     }
     else {
         MessageBox::Show("Training data and labels are not of the same size");
@@ -81,6 +83,8 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
 
     // TODO
 }
+
+
 //
 //std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData) {
 //    if (m_coefficients.size() == 0) {
@@ -157,7 +161,6 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
 	
 	// TODO
 }
-
 
 // Function to make predictions on new data //
 std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData) {
@@ -259,7 +262,7 @@ std::tuple<double, double, double, double, double, double,
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
 
         // Fit the model to the training data
-        fit(trainData, trainLabels,100,0.01);
+        fit(trainData, trainLabels);
 
         // Make predictions on the test data
         std::vector<double> testPredictions = predict(testData);

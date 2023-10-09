@@ -24,7 +24,8 @@ public:
 
 
     void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels);
-
+   
+   
 private:
     Eigen::VectorXd theta;
     Eigen::VectorXd m_coefficients; // Store the coefficients for future predictions
