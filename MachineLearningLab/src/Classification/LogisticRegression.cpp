@@ -30,6 +30,7 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
     int num_classes = std::set<double>(y_train.begin(), y_train.end()).size();
 
 
+<<<<<<< Updated upstream
 	/* Implement the following:
        	--- Initialize weights for each class
     	--- Loop over each class label
@@ -42,6 +43,37 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
     */
     
     // TODO
+=======
+                for (int features = 0; features < num_features; features++)
+                {
+                    weighted_sum += weight_vector[features + 1] * input_with_bias[features];
+                }
+
+                // Calculate the sigmoid of the weighted sum
+                double sigmoid_result = sigmoid(weighted_sum);
+                
+                double error = sigmoid_result - y_binary;
+
+                Gradient_vector[0] += error * 1.0; //Form av derivata
+                
+                for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++)
+                {
+                    Gradient_vector[gradient_calc + 1] += error * input_with_bias[gradient_calc];
+                }
+            }
+
+            for (int w = 0; w <= num_features; w++)
+            {
+                weight_vector[w] -= learning_rate * (Gradient_vector[w] / num_samples);
+             
+            }
+
+        }
+
+        weights.push_back(weight_vector);
+    }
+
+>>>>>>> Stashed changes
 }
 
 // Predict method to predict class labels for test data

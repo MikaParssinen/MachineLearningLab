@@ -22,6 +22,9 @@
 #include "../MainForm.h"
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
+#include <iostream>
+#include <cstdlib>   // For rand() function
+#include <ctime>
 using namespace System::Windows::Forms; // For MessageBox
 
 
@@ -29,6 +32,75 @@ using namespace System::Windows::Forms; // For MessageBox
 										///  LinearRegression class implementation  ///
 
 
+<<<<<<< Updated upstream
+=======
+double LinearRegression::generateRandomCoefficient() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(-1.0, 1.0);
+    return dis(gen);
+}
+
+
+void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate) {
+    int numSamples = trainData.size();
+    int numFeatures = trainData[0].size();
+
+    // Check if training data and labels are of the same size
+    if (numSamples != trainLabels.size()) {
+        std::cerr << "Training data and labels are not of the same size" << std::endl;
+        return;
+    }
+
+    // Initialize coefficients with random values
+    m_coefficients.resize(numFeatures);
+    for (int i = 0; i < numFeatures; i++) {
+        m_coefficients[i] = generateRandomCoefficient();
+    }
+
+    // Gradient Descent
+    for (int iter = 0; iter < num_iterations; iter++) {
+        // Calculate predictions
+        std::vector<double> predictions(numSamples, 0.0);
+        for (int i = 0; i < numSamples; i++) {
+            for (int j = 0; j < numFeatures; j++) {
+                predictions[i] += m_coefficients[j] * trainData[i][j];
+            }
+        }
+
+        // Compute the error (difference between predictions and actual labels)
+        std::vector<double> error(numSamples);
+        for (int i = 0; i < numSamples; i++) {
+            error[i] = predictions[i] - trainLabels[i];
+        }
+
+        // Compute the gradient and update coefficients using gradient descent
+        for (int j = 0; j < numFeatures; j++) {
+            double gradient = 0.0;
+            for (int i = 0; i < numSamples; i++) {
+                gradient += error[i] * trainData[i][j];
+            }
+            gradient /= numSamples;
+            m_coefficients[j] -= learning_rate * gradient;
+        }
+    }
+
+}
+// This implementation is using Matrix Form method
+/* Implement the following:
+    --- Check if the sizes of trainData and trainLabels match
+    --- Convert trainData to matrix representation
+    --- Construct the design matrix X
+    --- Convert trainLabels to matrix representation
+    --- Calculate the coefficients using the least squares method
+    --- Store the coefficients for future predictions
+*/
+
+// TODO
+
+
+
+>>>>>>> Stashed changes
 // Function to fit the linear regression model to the training data //
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels) {
 
@@ -44,6 +116,7 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
 	
 	// TODO
 }
+<<<<<<< Updated upstream
 
 
 // Function to make predictions on new data //
@@ -63,7 +136,60 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 	std::vector<double> result;
 	
     return result;
+=======
+std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData) {
+    int numSamples = testData.size();
+    int numFeatures = m_coefficients.size();
+
+    std::vector<double> predictions(numSamples, 0.0);
+
+    for (int i = 0; i < numSamples; i++) {
+        for (int j = 0; j < numFeatures; j++) {
+            predictions[i] += m_coefficients[j] * testData[i][j];
+        }
+    }
+
+    return predictions;
+>>>>>>> Stashed changes
 }
+
+//// Function to make predictions on new data //
+//std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData) {
+//    if (m_coefficients.size() == 0) {
+//		MessageBox::Show("Please fit the model to the training data first");
+//		return {}; // Return an empty vector since the model hasn't been fitted yet
+//	}
+//
+//    //Convert testData to matrix representation
+//     Eigen::MatrixXd X(testData.size(), testData[0].size());
+//     for (int i = 0; i < testData.size(); i++) {
+//     	for (int j = 0; j < testData[0].size(); j++)
+//     		//Construct the design matrix X
+//     		X(i, j) = testData[i][j];
+//     }
+//     
+//     //Make predictions using the stored coefficients
+//     Eigen::MatrixXd Y = X * m_coefficients;
+//     //Convert predictions to a vector
+//     std::vector<double> result;
+//     for (int i = 0; i < Y.rows(); i++) {
+//     	result.push_back(Y(i, 0));
+//     }
+//	
+//     // This implementation is using Matrix Form method    
+//    /* Implement the following
+//		--- Check if the model has been fitted
+//		--- Convert testData to matrix representation
+//		--- Construct the design matrix X
+//		--- Make predictions using the stored coefficients
+//		--- Convert predictions to a vector
+//	*/
+//	
+//	// TODO
+//
+//
+//    return result;
+//}
 
 
 
@@ -127,7 +253,7 @@ std::tuple<double, double, double, double, double, double,
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
 
         // Fit the model to the training data
-        fit(trainData, trainLabels);
+        fit(trainData, trainLabels,10,0.0001);
 
         // Make predictions on the test data
         std::vector<double> testPredictions = predict(testData);

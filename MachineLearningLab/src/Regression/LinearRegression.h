@@ -15,13 +15,27 @@
 
 class LinearRegression {
 public:
+<<<<<<< Updated upstream
     void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels);
+=======
+    double generateRandomCoefficient();
+    void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate);
+>>>>>>> Stashed changes
     std::vector<double> predict(const std::vector<std::vector<double>>& testData);
     std::tuple<double, double, double, double, double, double,
         std::vector<double>, std::vector<double>,
         std::vector<double>, std::vector<double>>
         runLinearRegression(const std::string& filePath, int trainingRatio);
 
+<<<<<<< Updated upstream
+=======
+
+    void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels);
+
+    std::vector<double> predict(const std::vector<std::vector<double>>& testData) const;
+   
+   
+>>>>>>> Stashed changes
 private:
 
     Eigen::VectorXd m_coefficients; // Store the coefficients for future predictions
