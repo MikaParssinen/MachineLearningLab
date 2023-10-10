@@ -34,37 +34,59 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
     //Check if training data and labels are of the same size
     if (trainData.size() == trainLabels.size()) {
     
-        //Convert trainData to matrix representation
-        Eigen::MatrixXd X(trainData.size(), trainData[0].size());
-        for (int i = 0; i < trainData.size(); i++) {
-            for (int j = 0; j < trainData[0].size(); j++)
-                //Construct the design matrix X{
-                X(i, j) = trainData[i][j];
+        int num_samples = trainData.size();
+        int num_features = trainData[0].size();
+        double weights = 0.0;
+        std::vector<double> error_vector;
+        
+        m_coefficients = Eigen::VectorXd::Ones(num_features + 1);
+
+        for (int i = 0, int constant = 1; i <= m_coefficients.size(); i++)
+        {
+            m_coefficients[i] = constant;
         }
-        //convert trainLabels to matrix representation
-        Eigen::MatrixXd Y(trainLabels.size(), 1);
-        for (int i = 0; i < trainLabels.size(); i++) {
-            Y(i, 0) = trainLabels[i];
+        
+        
+
+        for (int epoch = 0; epoch < num_iterations; epoch++)
+        {
+            std::vector<double> gradient(num_features + 1, 0.0);
+            for (int samples = 0; samples < trainData.size(); samples++) {
+
+
+                double weighted_sum = weights;
+                double predicted = 0.0;
+                for (int features = 0; features < trainData[0].size(); features++)
+                {
+                    predicted += m_coefficients[features] * trainData[samples][features];
+                    
+                }
+                predicted += m_coefficients[num_features]; // Intercept term
+
+                // Calculate the error for the current sample
+                double error = predicted - trainLabels[samples];
+                
+
+                for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++) {
+                    gradient[gradient_calc] += error * trainData[samples][gradient_calc];
+                }
+                gradient[num_features] += error;
+                //for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++)
+                //{
+                    
+                //}
+
+            }
+            //m_coefficients -= learning_rate * gradient / num_samples;
+            for (int fill = 0; fill < gradient.size(); fill++)
+            {
+                m_coefficients[fill] = gradient[fill];
+            }
+            
         }
 
-        //Calculate the coefficients using gradient decent method and store them for future predictions
-        // Initialize coefficients to zero
-        Eigen::MatrixXd B = Eigen::MatrixXd::Zero(trainData[0].size(), 1);
+       
 
-        for (int iter = 0; iter < num_iterations; iter++) {
-            // Calculate the hypothesis h = X * B
-            Eigen::MatrixXd h = X * B;
-
-            // Calculate the loss = h - Y and gradient = X' * loss
-            Eigen::MatrixXd loss = h - Y;
-            Eigen::MatrixXd gradient = X.transpose() * loss;
-
-            // Update the coefficients B = B - alpha * gradient
-            B = B - learning_rate * gradient;
-        }
-
-        // Store the coefficients for future predictions
-        m_coefficients = B;
 
  
     }
@@ -86,38 +108,38 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
 
 
 //
-//std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData) {
+//std::vector<double> linearregression::predict(const std::vector<std::vector<double>>& testdata) {
 //    if (m_coefficients.size() == 0) {
-//		MessageBox::Show("Please fit the model to the training data first");
-//		return {}; // Return an empty vector since the model hasn't been fitted yet
+//		messagebox::show("please fit the model to the training data first");
+//		return {}; // return an empty vector since the model hasn't been fitted yet
 //	}
 //
-//    //Convert testData to matrix representation
-//    Eigen::MatrixXd X(testData.size(), testData[0].size());
-//    for (int i = 0; i < testData.size(); i++) {
-//        for (int j = 0; j < testData[0].size(); j++)
-//            //Construct the design matrix X
-//            X(i, j) = testData[i][j];
+//    //convert testdata to matrix representation
+//    eigen::matrixxd x(testdata.size(), testdata[0].size());
+//    for (int i = 0; i < testdata.size(); i++) {
+//        for (int j = 0; j < testdata[0].size(); j++)
+//            //construct the design matrix x
+//            x(i, j) = testdata[i][j];
 //    }
 //
-//    //Make predictions using the stored coefficients
-//    Eigen::MatrixXd Y = X * m_coefficients;
-//    //Convert predictions to a vector
+//    //make predictions using the stored coefficients
+//    eigen::matrixxd y = x * m_coefficients;
+//    //convert predictions to a vector
 //    std::vector<double> result;
-//    for (int i = 0; i < Y.rows(); i++) {
-//        result.push_back(Y(i, 0));
+//    for (int i = 0; i < y.rows(); i++) {
+//        result.push_back(y(i, 0));
 //    }
 //    
-//     // This implementation is using Matrix Form method    
-//    /* Implement the following
-//		--- Check if the model has been fitted
-//		--- Convert testData to matrix representation
-//		--- Construct the design matrix X
-//		--- Make predictions using the stored coefficients
-//		--- Convert predictions to a vector
+//     // this implementation is using matrix form method    
+//    /* implement the following
+//		--- check if the model has been fitted
+//		--- convert testdata to matrix representation
+//		--- construct the design matrix x
+//		--- make predictions using the stored coefficients
+//		--- convert predictions to a vector
 //	*/
 //	
-//	// TODO
+//	// todo
 //
 //
 //    return result;
@@ -262,7 +284,7 @@ std::tuple<double, double, double, double, double, double,
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
 
         // Fit the model to the training data
-        fit(trainData, trainLabels);
+        fit(trainData, trainLabels, 1000, 0.001);
 
         // Make predictions on the test data
         std::vector<double> testPredictions = predict(testData);
