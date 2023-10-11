@@ -1584,7 +1584,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			}
 			else if (algorithmIndex == 1) {
 				// FuzzyCMeans Clustering//
-				int numClusters = 3; // Set the number of clusters
+				int numClusters = 4; // Set the number of clusters
 				int maxIterations = 100; // Set the maximum number of iterations
 				double fuzziness = 2.0; // Set the fuzziness parameter
 				FuzzyCMeans fcm(numClusters, maxIterations, fuzziness);

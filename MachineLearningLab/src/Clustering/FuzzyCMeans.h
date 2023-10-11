@@ -16,6 +16,8 @@ public:
 
     void fit(const std::vector<std::vector<double>>& data);
     std::vector<int> predict(const std::vector<std::vector<double>>& data) const;
+    double calculateMembership(const std::vector<double>& point, const std::vector<double>& centroid) const;
+    bool areCentroidsEqual(const std::vector<std::vector<double>>& centroids1, const std::vector<std::vector<double>>& centroids2) const;
     std::tuple<double, double, std::vector<int>, std::vector<std::vector<double>>>
         runFuzzyCMeans(const std::string& filePath);
 

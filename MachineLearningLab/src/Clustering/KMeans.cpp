@@ -74,13 +74,16 @@ void KMeans::fit(const std::vector<std::vector<double>>& data) {
 		std::vector<int> clusterCounts(numClusters_, 0); // Initialize clusterCounts to 0
 
 		// Tilldela datapunkter till närmaste centroid
-		for (const auto& point : normalizedData) {
+		for (const auto& point : normalizedData) 
+		{
 			
 			int closestCentroidIndex = -1; // Index of the closest centroid
 			std::vector<std::pair<int, double>> closestCentroids(normalizedData.size(), { -1, DBL_MAX }); // {Index för närmaste centroid, Avstånd till närmaste centroid}
 
-			for (size_t i = 0; i < normalizedData.size(); ++i) {
-				for (size_t j = 0; j < numClusters_; ++j) {
+			for (size_t i = 0; i < normalizedData.size(); ++i)
+			{
+				for (size_t j = 0; j < numClusters_; ++j)
+				{
 					double distance = SimilarityFunctions::euclideanDistance(normalizedData[i], centroids_[j]); // Calculate the Euclidean distance between the point and the current centroid 
 					if (distance < closestCentroids[i].second) {
 						closestCentroids[i] = { static_cast<int>(j), distance };
@@ -92,17 +95,21 @@ void KMeans::fit(const std::vector<std::vector<double>>& data) {
 			std::vector<std::vector<double>> newCentroids(numClusters_, std::vector<double>(data[0].size(), 0));
 			std::vector<int> clusterCounts(numClusters_, 0);
 
-			for (size_t i = 0; i < normalizedData.size(); ++i) {
+			for (size_t i = 0; i < normalizedData.size(); ++i) 
+			{
 				int closestCentroidIndex = closestCentroids[i].first;
-				for (size_t j = 0; j < normalizedData[i].size(); ++j) {
+				for (size_t j = 0; j < normalizedData[i].size(); ++j)
+				{
 					newCentroids[closestCentroidIndex][j] += normalizedData[i][j];
 				}
 				clusterCounts[closestCentroidIndex]++;
 			}
 
 			// Uppdatera centroiderna
-			for (size_t i = 0; i < numClusters_; ++i) {
-				for (size_t j = 0; j < data[0].size(); ++j) {
+			for (size_t i = 0; i < numClusters_; ++i) 
+			{
+				for (size_t j = 0; j < data[0].size(); ++j) 
+				{
 					if (clusterCounts[i] > 0)
 						centroids_[i][j] = newCentroids[i][j] / clusterCounts[i];
 				}
