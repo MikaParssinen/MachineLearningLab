@@ -1558,7 +1558,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 
 			if (algorithmIndex == 0) {
 				// K-Means Clustering//
-				int numClusters = 3;
+				int numClusters = 4;
 				int maxIterations = 100;
 				KMeans kmeans(numClusters, maxIterations);
 
