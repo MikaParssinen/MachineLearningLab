@@ -28,44 +28,49 @@ using namespace System::Windows::Forms; // For MessageBox
 
 										///  LinearRegression class implementation  ///
 
+double LinearRegression::hypo(const std::vector<double>& trainLabels) {
+
+    //calculate h
+
+
+
+}
+
+
 
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate) {
-
+    double num_feats = trainData[0].size();
+	int num_samples = trainData.size();
+    
     //Check if training data and labels are of the same size
     if (trainData.size() == trainLabels.size()) {
-    
-        //Convert trainData to matrix representation
-        Eigen::MatrixXd X(trainData.size(), trainData[0].size());
-        for (int i = 0; i < trainData.size(); i++) {
-            for (int j = 0; j < trainData[0].size(); j++)
-                //Construct the design matrix X{
-                X(i, j) = trainData[i][j];
+        for (int i = 0;  i < num_iterations; i++) 
+        {
+            
+			std::vector<double> gradient(num_feats + 1.0 , 0.0);
+            
+            for (int j = 0; j < num_samples; j++)
+            {
+                double h = hypo(trainLabels[j]);
+                gradient[0] += (trainLabels[j] - h) * 1.0;
+                for (int k = 1; k <= num_feats; k++) 
+                {
+                    
+                    gradient[k] += (trainLabels[j] - h) * trainData[j][k - 1];
+                }
+
+            }
+            gradient[i] /= (num_samples * (-2));
+            m_coefficients(0) -= gradient[0] * learning_rate;
+            for (int l = 1; l <= num_feats; l++)
+            {
+                gradient[l] /= (num_samples * (-2));
+                m_coefficients(l) -= gradient[l] * learning_rate;
+            }
+
+        
         }
-        //convert trainLabels to matrix representation
-        Eigen::MatrixXd Y(trainLabels.size(), 1);
-        for (int i = 0; i < trainLabels.size(); i++) {
-            Y(i, 0) = trainLabels[i];
-        }
-
-        //Calculate the coefficients using gradient decent method and store them for future predictions
-        // Initialize coefficients to zero
-        Eigen::MatrixXd B = Eigen::MatrixXd::Zero(trainData[0].size(), 1);
-
-        for (int iter = 0; iter < num_iterations; iter++) {
-            // Calculate the hypothesis h = X * B
-            Eigen::MatrixXd h = X * B;
-
-            // Calculate the loss = h - Y and gradient = X' * loss
-            Eigen::MatrixXd loss = h - Y;
-            Eigen::MatrixXd gradient = X.transpose() * loss;
-
-            // Update the coefficients B = B - alpha * gradient
-            B = B - learning_rate * gradient;
-        }
-
-        // Store the coefficients for future predictions
-        m_coefficients = B;
-
+ 
  
     }
     else {
@@ -84,44 +89,6 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
     // TODO
 }
 
-
-//
-//std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData) {
-//    if (m_coefficients.size() == 0) {
-//		MessageBox::Show("Please fit the model to the training data first");
-//		return {}; // Return an empty vector since the model hasn't been fitted yet
-//	}
-//
-//    //Convert testData to matrix representation
-//    Eigen::MatrixXd X(testData.size(), testData[0].size());
-//    for (int i = 0; i < testData.size(); i++) {
-//        for (int j = 0; j < testData[0].size(); j++)
-//            //Construct the design matrix X
-//            X(i, j) = testData[i][j];
-//    }
-//
-//    //Make predictions using the stored coefficients
-//    Eigen::MatrixXd Y = X * m_coefficients;
-//    //Convert predictions to a vector
-//    std::vector<double> result;
-//    for (int i = 0; i < Y.rows(); i++) {
-//        result.push_back(Y(i, 0));
-//    }
-//    
-//     // This implementation is using Matrix Form method    
-//    /* Implement the following
-//		--- Check if the model has been fitted
-//		--- Convert testData to matrix representation
-//		--- Construct the design matrix X
-//		--- Make predictions using the stored coefficients
-//		--- Convert predictions to a vector
-//	*/
-//	
-//	// TODO
-//
-//
-//    return result;
-//}
 
 // Function to fit the linear regression model to the training data //
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels) {
