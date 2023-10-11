@@ -28,55 +28,61 @@ using namespace System::Windows::Forms; // For MessageBox
 
 										///  LinearRegression class implementation  ///
 
-double LinearRegression::hypo(const std::vector<double>& trainLabels) {
+double LinearRegression::hypo(std::vector<double> trainLabels) {
 
-    //calculate h
+    double h = 0.0;
+    int síze = m_coefficients.size();
 
-
-
+    h += m_coefficients(0);
+    
+	for (int i = 1; i < m_coefficients.size(); i++)
+    {
+		h += m_coefficients(i) * trainLabels[i - 1];
+	}
+	return h;
+	
 }
 
 
 
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate) {
     double num_feats = trainData[0].size();
-	int num_samples = trainData.size();
-    
+    int num_samples = trainData.size();
+
+    m_coefficients = Eigen::VectorXd::Ones(num_feats + 1);
+
     //Check if training data and labels are of the same size
     if (trainData.size() == trainLabels.size()) {
-        for (int i = 0;  i < num_iterations; i++) 
+        for (int i = 0; i < num_iterations; i++)
         {
-            
-			std::vector<double> gradient(num_feats + 1.0 , 0.0);
-            
+            std::vector<double> gradient(num_feats + 1.0, 0.0);
+
             for (int j = 0; j < num_samples; j++)
             {
-                double h = hypo(trainLabels[j]);
-                gradient[0] += (trainLabels[j] - h) * 1.0;
-                for (int k = 1; k <= num_feats; k++) 
+                double h = hypo(trainData[j]);
+                gradient[0] += (h - trainLabels[j]);
+                for (int k = 1; k <= num_feats; k++)
                 {
-                    
-                    gradient[k] += (trainLabels[j] - h) * trainData[j][k - 1];
+                    gradient[k] += (h - trainLabels[j]) * trainData[j][k - 1];
                 }
-
             }
-            gradient[i] /= (num_samples * (-2));
+            
+            gradient[0] = (gradient[0] * -2) / num_samples;
             m_coefficients(0) -= gradient[0] * learning_rate;
-            for (int l = 1; l <= num_feats; l++)
-            {
-                gradient[l] /= (num_samples * (-2));
-                m_coefficients(l) -= gradient[l] * learning_rate;
-            }
 
-        
+            for (int l = 0; l <= num_feats; l++)
+            {
+                gradient[l] /= num_samples;
+                m_coefficients[l] -= learning_rate * gradient[l];
+            }
         }
- 
- 
     }
     else {
         MessageBox::Show("Training data and labels are not of the same size");
     }
-    // This implementation is using Matrix Form method
+
+}
+// This implementation is using Matrix Form method
     /* Implement the following:
         --- Check if the sizes of trainData and trainLabels match
         --- Convert trainData to matrix representation
@@ -87,7 +93,6 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
     */
 
     // TODO
-}
 
 
 // Function to fit the linear regression model to the training data //
@@ -137,7 +142,7 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 	}
 
     //Convert testData to matrix representation
-     Eigen::MatrixXd X(testData.size(), testData[0].size());
+     Eigen::MatrixXd X(testData.size(), testData[0].size()+1);
      for (int i = 0; i < testData.size(); i++) {
      	for (int j = 0; j < testData[0].size(); j++)
      		//Construct the design matrix X
@@ -229,7 +234,8 @@ std::tuple<double, double, double, double, double, double,
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
 
         // Fit the model to the training data
-        fit(trainData, trainLabels);
+        fit(trainData, trainLabels,15000,0.0000000000000000001);
+        //fit(trainData, trainLabels);
 
         // Make predictions on the test data
         std::vector<double> testPredictions = predict(testData);
