@@ -1249,7 +1249,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->ClientSize = System::Drawing::Size(1787, 932);
+			this->ClientSize = System::Drawing::Size(1804, 949);
 			this->Controls->Add(this->mainTabControl);
 			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"MainForm";
@@ -1559,7 +1559,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			if (algorithmIndex == 0) {
 				// K-Means Clustering//
 				int numClusters = 4;
-				int maxIterations = 100;
+				int maxIterations = 100000;
 				KMeans kmeans(numClusters, maxIterations);
 
 				// Evaluation //
@@ -1585,8 +1585,8 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			else if (algorithmIndex == 1) {
 				// FuzzyCMeans Clustering//
 				int numClusters = 4; // Set the number of clusters
-				int maxIterations = 100; // Set the maximum number of iterations
-				double fuzziness = 2.0; // Set the fuzziness parameter
+				int maxIterations = 1000; // Set the maximum number of iterations
+				double fuzziness = 6.0; // Set the fuzziness parameter
 				FuzzyCMeans fcm(numClusters, maxIterations, fuzziness);
 			
 
