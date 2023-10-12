@@ -16,6 +16,10 @@
 #include <sstream>
 #include <map>
 #include <unordered_map> 
+
+#include <cfloat> 
+
+#include <numeric> 
 using namespace System::Windows::Forms; // For MessageBox
 
 
@@ -26,12 +30,100 @@ KMeans::KMeans(int numClusters, int maxIterations)
 	: numClusters_(numClusters), maxIterations_(maxIterations) {}
 
 
+
+
+
 // fit function: Performs K-means clustering on the given dataset and return the centroids of the clusters.//
 void KMeans::fit(const std::vector<std::vector<double>>& data) {
 	// Create a copy of the data to preserve the original dataset
 	std::vector<std::vector<double>> normalizedData = data;
+	
+	
+	
+	/*    	Initialize centroids randomly and  Randomly select unique centroid indices          */
+	
+	// Create a vector of indices from 0 to data.size() - 1
+	std::vector<size_t> indexList(data.size()); // Create a vector of size data.size()
+	std::iota(indexList.begin(), indexList.end(), 0); // Fill with 0, 1, ..., data.size() - 1
 
-	/* Implement the following:
+	// Shuffle the index list
+	std::random_device rd; // Obtain a random number from hardware
+	std::mt19937 gen(rd()); // Seed the generator
+	std::shuffle(indexList.begin(), indexList.end(), gen); // Shuffle the indices
+
+	centroids_.clear();  // Clear any existing centroids
+
+	// Choose the first numClusters_ indices as initial centroids
+	for (size_t i = 0; i < numClusters_; ++i) 
+	{
+		centroids_.push_back(normalizedData[indexList[i]]);  // Use the data point as a centroid
+	}
+
+	
+
+	/*    	Perform K-means clustering until convergence or maxIterations is reached          */
+	
+	
+	bool centroidsChanged = true;
+	int iter = 0;
+
+	while (centroidsChanged && iter < maxIterations_) {
+		std::vector<std::vector<double>> oldCentroids = centroids_; // Save the old centroids
+		double minDistance = DBL_MAX; // Initialize minDistance to the maximum value of a double
+		std::vector<std::vector<double>> clusterSums(numClusters_, std::vector<double>(data[0].size(), 0)); // Initialize clusterSums to 0
+		std::vector<int> clusterCounts(numClusters_, 0); // Initialize clusterCounts to 0
+
+		// Tilldela datapunkter till närmaste centroid
+		for (const auto& point : normalizedData) 
+		{
+			
+			int closestCentroidIndex = -1; // Index of the closest centroid
+			std::vector<std::pair<int, double>> closestCentroids(normalizedData.size(), { -1, DBL_MAX }); // {Index för närmaste centroid, Avstånd till närmaste centroid}
+
+			for (size_t i = 0; i < normalizedData.size(); ++i)
+			{
+				for (size_t j = 0; j < numClusters_; ++j)
+				{
+					double distance = SimilarityFunctions::euclideanDistance(normalizedData[i], centroids_[j]); // Calculate the Euclidean distance between the point and the current centroid 
+					if (distance < closestCentroids[i].second) {
+						closestCentroids[i] = { static_cast<int>(j), distance };
+					}
+				}
+			}
+
+			// Lägg till datapunkter i respektive kluster baserat på den närmaste centroiden
+			std::vector<std::vector<double>> newCentroids(numClusters_, std::vector<double>(data[0].size(), 0));
+			std::vector<int> clusterCounts(numClusters_, 0);
+
+			for (size_t i = 0; i < normalizedData.size(); ++i) 
+			{
+				int closestCentroidIndex = closestCentroids[i].first;
+				for (size_t j = 0; j < normalizedData[i].size(); ++j)
+				{
+					newCentroids[closestCentroidIndex][j] += normalizedData[i][j];
+				}
+				clusterCounts[closestCentroidIndex]++;
+			}
+
+			// Uppdatera centroiderna
+			for (size_t i = 0; i < numClusters_; ++i) 
+			{
+				for (size_t j = 0; j < data[0].size(); ++j) 
+				{
+					if (clusterCounts[i] > 0)
+						centroids_[i][j] = newCentroids[i][j] / clusterCounts[i];
+				}
+			}
+
+			// Kontrollera om centroiderna har förändrats
+			centroidsChanged = !areCentroidsEqual(oldCentroids, centroids_);
+			iter++;
+		}
+	}
+}
+
+
+/* Implement the following:
 		---	Initialize centroids randomly
 		--- Randomly select unique centroid indices
 		---	Perform K-means clustering
@@ -41,30 +133,55 @@ void KMeans::fit(const std::vector<std::vector<double>>& data) {
 		--- Update centroids
 		---  Check for convergence
 	*/
-	
+
 	// TODO
-}
 
 
 //// predict function: Calculates the closest centroid for each point in the given data set and returns the labels of the closest centroids.//
 std::vector<int> KMeans::predict(const std::vector<std::vector<double>>& data) const {
 	std::vector<int> labels;
 	labels.reserve(data.size());
-	
-	/* Implement the following:
-		--- Initialize the closest centroid and minimum distance to the maximum possible value
-		--- Iterate through each centroid
-		--- Calculate the Euclidean distance between the point and the centroid
-		--- Add the closest centroid to the labels vector
-    */
-	
-	// TODO
-	return labels; // Return the labels vector
 
+	for (const auto& point : data) {
+		int closestCentroid = -1; // Initialize the closest centroid to an invalid value
+		double minDistance = DBL_MAX; // Initialize the minimum distance to the maximum possible value
+
+		for (size_t i = 0; i < numClusters_; ++i) {
+			double distance = SimilarityFunctions::euclideanDistance(point, centroids_[i]); // Calculate the Euclidean distance between the point and the centroid
+			if (distance < minDistance) {
+				minDistance = distance;
+				closestCentroid = static_cast<int>(i); // Update the closest centroid index
+			}
+		}
+
+		labels.push_back(closestCentroid); // Add the closest centroid to the labels vector
+	}
+
+	return labels; // Return the labels vector
 }
 
 
+/* Implement the following:
+	--- Initialize the closest centroid and minimum distance to the maximum possible value
+	--- Iterate through each centroid
+	--- Calculate the Euclidean distance between the point and the centroid
+	--- Add the closest centroid to the labels vector
+*/
 
+// TODO
+
+
+bool KMeans::areCentroidsEqual(const std::vector<std::vector<double>>& centroids1, const std::vector<std::vector<double>>& centroids2) const {
+	if (centroids1.size() != centroids2.size())
+		return false;
+
+	for (size_t i = 0; i < centroids1.size(); ++i) {
+		if (centroids1[i] != centroids2[i])
+			return false;
+	}
+
+	return true;
+}
 
 
 /// runKMeans: this function runs the KMeans clustering algorithm on the given dataset and 

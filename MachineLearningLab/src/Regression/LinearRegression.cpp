@@ -29,11 +29,34 @@ using namespace System::Windows::Forms; // For MessageBox
 
 										///  LinearRegression class implementation  ///
 
+double LinearRegression::hypo(std::vector<double> trainLabels) {
+
+    double h = 0.0;
+    int s�ze = m_coefficients.size();
+
+    h += m_coefficients(0);
+    
+	for (int i = 1; i < m_coefficients.size(); i++)
+    {
+		h += m_coefficients(i) * trainLabels[i - 1];
+	}
+	return h;
+	
+}
+
+
 
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate) {
 
+    calculateMeanAndStd(trainData);
+    double num_feats = trainData[0].size();
+    int num_samples = trainData.size();
+
+    m_coefficients = Eigen::VectorXd::Ones(num_feats + 1);
+
     //Check if training data and labels are of the same size
     if (trainData.size() == trainLabels.size()) {
+
     
         int num_samples = trainData.size();
         int num_features = trainData[0].size();
@@ -126,11 +149,12 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
        
 
 
- 
+
     }
     else {
         MessageBox::Show("Training data and labels are not of the same size");
     }
+
 
 
     std::vector<double> K(trainData[0].size() + 1);
@@ -140,6 +164,10 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
             K[i] = m_coefficients[i];
         }
     // This implementation is using Matrix Form method
+
+}
+// This implementation is using Matrix Form method
+
     /* Implement the following:
         --- Check if the sizes of trainData and trainLabels match
         --- Convert trainData to matrix representation
@@ -150,6 +178,7 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
     */
 
     // TODO
+
 }
 
 std::vector<std::vector<double>> LinearRegression::NormalizeForPredict(const std::vector<std::vector<double>>& trainData)
@@ -280,6 +309,8 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 //    return result;
 //}
 
+
+
 // Function to fit the linear regression model to the training data //
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels) {
     
@@ -328,8 +359,14 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 		return {}; // Return an empty vector since the model hasn't been fitted yet
 	}
 
+    for (int i = 0; i < testData.size(); i++) {
+           for (int j = 0; j < testData[0].size(); j++) {
+               testData[i][j] = (testData[i][j] - m_mean(j)) / m_std(j);
+           }
+    }
+
     //Convert testData to matrix representation
-     Eigen::MatrixXd X(testData.size(), testData[0].size());
+     Eigen::MatrixXd X(testData.size(), testData[0].size()+1);
      for (int i = 0; i < testData.size(); i++) {
      	for (int j = 0; j < testData[0].size(); j++)
      		//Construct the design matrix X
@@ -420,11 +457,12 @@ std::tuple<double, double, double, double, double, double,
 
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
 
-        // Fit the model to the training data
+
         fit(trainData, trainLabels, 5000, 0.07);
 
         //Second predict function call
         std::vector<double> testPredictions = predict(testData, 0);
+
 
         // Make predictions on the test data
         //std::vector<double> testPredictions = predict(testData);
