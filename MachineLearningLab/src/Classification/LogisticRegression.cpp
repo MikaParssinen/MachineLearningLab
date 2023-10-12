@@ -49,19 +49,17 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
     int num_features = X_train[0].size();
     int num_classes = std::set<double>(y_train.begin(), y_train.end()).size();
 
-    
-   
     for (int i = 0; i < num_classes; i++)
     {
         // Initialize weights for each class
         std::vector<double> weight_vector(num_features + 1, 0.0); // +1 for bias
         for (int epoch = 0; epoch < num_epochs; epoch++)
         {
-            
+
             std::vector<double> Gradient_vector(num_features + 1, 0.0);
             for (int samples = 0; samples < num_samples; samples++)
             {
-                int y_binary = (y_train[samples] == i+1) ? 1 : 0; // 1 if class matches, 0 otherwise
+                int y_binary = (y_train[samples] == i + 1) ? 1 : 0; // 1 if class matches, 0 otherwise
                 std::vector<double> input_with_bias = X_train[samples];
                 input_with_bias.push_back(1.0); // Adding bias
                 double weighted_sum = weight_vector[0];
@@ -73,11 +71,11 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
 
                 // Calculate the sigmoid of the weighted sum
                 double sigmoid_result = sigmoid(weighted_sum);
-                
+
                 double error = sigmoid_result - y_binary;
 
                 Gradient_vector[0] += error * 1.0; //Form av derivata
-                
+
                 for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++)
                 {
                     Gradient_vector[gradient_calc + 1] += error * input_with_bias[gradient_calc];
@@ -85,82 +83,18 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
 
             }
 
-
             for (int w = 0; w <= num_features; w++)
             {
                 weight_vector[w] -= learning_rate * (Gradient_vector[w] / num_samples);
-             
+
             }
-
-
-            
-
 
         }
 
         weights.push_back(weight_vector);
     }
 
-    /*
-   // Loop over training epochs
-    for (int epoch = 0; epoch < num_epochs; epoch++) {
-        for (int i = 0; i < num_samples; i++) {
-            // Add bias term to the training example
-            std::vector<double> input_with_bias = X_train[i];
-            input_with_bias.push_back(1.0); // Adding bias
-
-            // Convert the problem into a binary classification problem for each class
-            for (int c = 0; c < num_classes; c++) {
-                int y_binary = (y_train[i] == c) ? 1 : 0; // 1 if class matches, 0 otherwise
-
-                // Calculate weighted sum of features
-                double weighted_sum = weights[c][0];
-                for (int j = 0; j < num_features; j++) {
-
-                    weighted_sum += weights[c][j+1] * input_with_bias[j];
-                }
-
-                // Calculate the sigmoid of the weighted sum
-                double sigmoid_result = sigmoid(weighted_sum);
-               
-                
-                // double sigmoid_result = 1.0 / (1.0 + exp(-weighted_sum));
-
-                // Calculate the error (difference between predicted and actual)
-                double error = sigmoid_result - y_binary;
-                 
-                double gradient = error;
-                weights[c][0] -= learning_rate * gradient;
-
-
-                /*
-                for (int j = 0; j < num_features + 1; ++j) {
-                    weights[c][j] -= learning_rate * (error) * input_with_bias[j];
-                }
-                */
-
-                // Update weights using gradient descent
-                
-                /*
-                for (int j = 0; j < num_features; j++) {
-                    // Calculate the gradient for this weight
-                    gradient = error * input_with_bias[j];
-
-                    // Update the weight using gradient descent
-                    weights[c][j+1] -= learning_rate * gradient;
-                }
-                
-            }
-        }
-    }
-
-    // Store the computed weights for prediction
-    this->weights = weights;
-    */
 }
-
-
-
 
 std::vector<double> LogisticRegression::predict(const std::vector<std::vector<double>>& X_test) {
     std::vector<double> predictions;
