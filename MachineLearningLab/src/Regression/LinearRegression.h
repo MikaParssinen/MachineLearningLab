@@ -17,6 +17,7 @@ class LinearRegression {
 public:
     double hypo(std::vector<double> trainLabels);
     void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate);
+    std::vector<double> LinearRegression::predict(const std::vector<std::vector<double>>& testData, int gradient);
     std::vector<double> predict(const std::vector<std::vector<double>>& testData);
     std::tuple<double, double, double, double, double, double,
         std::vector<double>, std::vector<double>,
@@ -25,6 +26,10 @@ public:
 
 
     void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels);
+    std::vector<std::vector<double>> LinearRegression::NormalizeForPredict(const std::vector<std::vector<double>>& testData);
+    
+
+    
    
    
 private:
