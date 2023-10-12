@@ -37,7 +37,7 @@ private:
     Eigen::VectorXd m_coefficients; // Store the coefficients for future predictions
 
     Eigen::VectorXd m_mean;  // Mean of each feature
-    Eigen::VectorXd m_std;   // Standard deviation of each feature
+    Eigen::VectorXd m_std;   // Standard deiation of each feature
     Eigen::VectorXd m_coefficients;  // Coefficients of the linear regression model
 
     // Helper function to calculate mean and standard deviation of each feature
