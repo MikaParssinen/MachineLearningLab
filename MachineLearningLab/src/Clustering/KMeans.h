@@ -16,9 +16,6 @@ public:
     KMeans(int numClusters, int maxIterations);
     void fit(const std::vector<std::vector<double>>& data);
     std::vector<int> predict(const std::vector<std::vector<double>>& data) const;
-    
-    bool areCentroidsEqual(const std::vector<std::vector<double>>& centroids1, const std::vector<std::vector<double>>& centroids2) const;
-    
     std::tuple<double, double, std::vector<int>, std::vector<std::vector<double>>>
         runKMeans(const std::string& filePath);
 
