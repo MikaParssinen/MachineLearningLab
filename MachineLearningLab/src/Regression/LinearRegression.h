@@ -25,6 +25,9 @@ public:
 
 
     void fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels);
+    std::vector<std::vector<double>> LinearRegression::NormalizeForPredict(const std::vector<std::vector<double>>& testData);
+    
+
     
    
    
