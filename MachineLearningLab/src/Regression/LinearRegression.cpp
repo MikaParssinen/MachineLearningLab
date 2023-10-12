@@ -29,26 +29,10 @@ using namespace System::Windows::Forms; // For MessageBox
 
 										///  LinearRegression class implementation  ///
 
-double LinearRegression::hypo(std::vector<double> trainLabels) {
-
-    double h = 0.0;
-    int s�ze = m_coefficients.size();
-
-    h += m_coefficients(0);
-    
-	for (int i = 1; i < m_coefficients.size(); i++)
-    {
-		h += m_coefficients(i) * trainLabels[i - 1];
-	}
-	return h;
-	
-}
-
-
 
 void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, const std::vector<double>& trainLabels, int num_iterations, double learning_rate) {
 
-    calculateMeanAndStd(trainData);
+  
     double num_feats = trainData[0].size();
     int num_samples = trainData.size();
 
@@ -146,9 +130,7 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
             
         }
 
-       
-
-
+ 
 
     }
     else {
@@ -179,7 +161,7 @@ void LinearRegression::fit(const std::vector<std::vector<double>>& trainData, co
 
     // TODO
 
-}
+
 
 std::vector<std::vector<double>> LinearRegression::NormalizeForPredict(const std::vector<std::vector<double>>& trainData)
 {
@@ -358,12 +340,6 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 		MessageBox::Show("Please fit the model to the training data first");
 		return {}; // Return an empty vector since the model hasn't been fitted yet
 	}
-
-    for (int i = 0; i < testData.size(); i++) {
-           for (int j = 0; j < testData[0].size(); j++) {
-               testData[i][j] = (testData[i][j] - m_mean(j)) / m_std(j);
-           }
-    }
 
     //Convert testData to matrix representation
      Eigen::MatrixXd X(testData.size(), testData[0].size()+1);
