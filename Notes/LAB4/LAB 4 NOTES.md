@@ -13,3 +13,5 @@ I matrix så använder vi matris multiplikation. Vi behöver inte itterera någo
 I Gradient descent tar vi små och många steg för att hitta vikten. Vi behöver itterera över all data många gånger. Används för stora datasets matris blir ineffektivft.
 
 **Vilka värden blir bäst?:**
+
+Bästa värden får vi 5000 epoker, 0,05
