@@ -154,7 +154,7 @@ std::vector<int> KMeans::predict(const std::vector<std::vector<double>>& data) c
 			}
 		}
 
-		labels.push_back(closestCentroid); // Add the closest centroid to the labels vector
+		labels.push_back(closestCentroid+1); // Add the closest centroid to the labels vector
 	}
 
 	return labels; // Return the labels vector

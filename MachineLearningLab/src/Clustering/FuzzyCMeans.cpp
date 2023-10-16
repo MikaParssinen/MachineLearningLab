@@ -135,6 +135,7 @@ void FuzzyCMeans::updateMembershipMatrix(const std::vector<std::vector<double>>&
 			membershipMatrix_[i][j] /= sumMembership;
 		}
 	}
+	
 	/* Implement the following:
 		---	Iterate through each data point
 		--- Calculate the distance between the data point and the centroid
@@ -198,7 +199,7 @@ std::vector<int> FuzzyCMeans::predict(const std::vector<std::vector<double>>& da
 		}
 
 		// Add the label of the closest centroid to the labels vector
-		labels.push_back(closestCentroidIndex);
+		labels.push_back(closestCentroidIndex+1);
 	}
 
 	return labels; // Return the labels vector

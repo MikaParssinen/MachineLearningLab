@@ -342,7 +342,7 @@ std::vector<double> LinearRegression::predict(const std::vector<std::vector<doub
 	}
 
     //Convert testData to matrix representation
-     Eigen::MatrixXd X(testData.size(), testData[0].size()+1);
+     Eigen::MatrixXd X(testData.size(), testData[0].size());
      for (int i = 0; i < testData.size(); i++) {
      	for (int j = 0; j < testData[0].size(); j++)
      		//Construct the design matrix X
@@ -432,16 +432,18 @@ std::tuple<double, double, double, double, double, double,
         std::vector<double> testLabels;
 
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
-
-
-        fit(trainData, trainLabels, 5000, 0.07);
+		
+        //First fit function call
+        fit(trainData, trainLabels);
+       
+        //fit(trainData, trainLabels, 5000, 0.07);
 
         //Second predict function call
-        std::vector<double> testPredictions = predict(testData, 0);
+        //std::vector<double> testPredictions = predict(testData, 0);
 
 
         // Make predictions on the test data
-        //std::vector<double> testPredictions = predict(testData);
+        std::vector<double> testPredictions = predict(testData);
 
         // Calculate evaluation metrics (e.g., MAE, MSE)
         double test_mae = Metrics::meanAbsoluteError(testLabels, testPredictions);
@@ -449,10 +451,10 @@ std::tuple<double, double, double, double, double, double,
         double test_rsquared = Metrics::rSquared(testLabels, testPredictions);
 
         //Second predict function call
-        std::vector<double> trainPredictions = predict(trainData, 0);
+        //std::vector<double> trainPredictions = predict(trainData, 0);
 
         // Make predictions on the training data
-        //std::vector<double> trainPredictions = predict(trainData);
+        std::vector<double> trainPredictions = predict(trainData);
 
         // Calculate evaluation metrics for training data
         double train_mae = Metrics::meanAbsoluteError(trainLabels, trainPredictions);
