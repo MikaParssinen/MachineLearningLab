@@ -15,8 +15,10 @@ class KMeans {
 public:
     KMeans(int numClusters, int maxIterations);
     void fit(const std::vector<std::vector<double>>& data);
+    double returnSmallestDistanceValue(std::vector<double> distances);
     std::vector<int> predict(const std::vector<std::vector<double>>& data) const;
     std::tuple<double, double, std::vector<int>, std::vector<std::vector<double>>>
+    
         runKMeans(const std::string& filePath);
 
 private:

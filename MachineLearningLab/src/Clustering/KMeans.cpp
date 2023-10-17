@@ -16,6 +16,9 @@
 #include <sstream>
 #include <map>
 #include <unordered_map> 
+#include <cfloat>
+#include <numeric>
+#include <algorithm>
 using namespace System::Windows::Forms; // For MessageBox
 
 
@@ -43,6 +46,80 @@ void KMeans::fit(const std::vector<std::vector<double>>& data) {
 	*/
 	
 	// TODO
+
+	//int num_clusters = 3;
+	double cluster_num_function;
+	std::vector<double> Range_values(data.size());
+
+	int range = 0;
+	while (range < Range_values.size());
+	{
+		Range_values[range] = range;
+		range++;
+	}
+	
+	srand(unsigned(time(NULL)));
+	std::random_shuffle(Range_values.begin(), Range_values.end());
+	//std::shuffle(Range_values.begin(), Range_values.end(), Range_values.size()-1);
+
+	int i = 0;
+	while (i <= numClusters_)
+	{
+		centroids_.push_back(normalizedData[Range_values[i]]);
+		
+	}
+
+	std::vector<double> distances;
+	
+	for (int iterations = 0; iterations < maxIterations_; iterations++)
+	{
+		
+		std::vector<int, double> cluster_labels;
+		int j = 0;
+		for (auto& X_Point : normalizedData)
+		{
+			
+			distances.push_back(SimilarityFunctions::euclideanDistance(X_Point, centroids_[j]));
+			cluster_num_function = returnSmallestDistanceValue(distances);
+			cluster_labels.push_back(cluster_num_function);
+			if (j < numClusters_)
+			{
+				j++;
+			}
+		}
+		/*
+		std::vector<double> cluster_indices;
+		for (int i = 0; i < numClusters_; i++)
+		{
+			cluster_indices.push_back()
+		}
+		*/
+		
+	}
+
+	
+	/*
+	for (type variable_name : array / vector_name)
+	{
+		loop statements
+			...
+	}
+	*/
+}
+
+double KMeans::returnSmallestDistanceValue(std::vector<double> distances)
+{
+	double index = 1.0;
+
+	for (int i = 0; i < distances.size(); i++)
+	{
+		if (distances[i] < distances[index])
+		{
+			index = i;
+		}
+	}
+
+	return index;
 }
 
 
