@@ -52,7 +52,7 @@ void KMeans::fit(const std::vector<std::vector<double>>& data) {
 	std::vector<double> Range_values(data.size());
 
 	int range = 0;
-	while (range < Range_values.size());
+	while (range < 150)
 	{
 		Range_values[range] = range;
 		range++;
@@ -63,38 +63,48 @@ void KMeans::fit(const std::vector<std::vector<double>>& data) {
 	//std::shuffle(Range_values.begin(), Range_values.end(), Range_values.size()-1);
 
 	int i = 0;
-	while (i <= numClusters_)
+	while (i < numClusters_)
 	{
 		centroids_.push_back(normalizedData[Range_values[i]]);
-		
+		i++;
 	}
 
-	std::vector<double> distances;
+	
 	
 	for (int iterations = 0; iterations < maxIterations_; iterations++)
 	{
+		std::vector<std::vector<double>> original_centroids = centroids_;
+		std::vector<std::pair<int, double>> cluster_labels(normalizedData.size(), { -1, DBL_MAX });
 		
-		std::vector<int, double> cluster_labels;
-		int j = 0;
-		for (auto& X_Point : normalizedData)
+		
+		for (int pointIndex = 0; pointIndex < normalizedData.size(); pointIndex++)
 		{
-			
-			distances.push_back(SimilarityFunctions::euclideanDistance(X_Point, centroids_[j]));
-			cluster_num_function = returnSmallestDistanceValue(distances);
-			cluster_labels.push_back(cluster_num_function);
-			if (j < numClusters_)
+			for (int centroidIndex = 0; centroidIndex < numClusters_; centroidIndex++)
 			{
-				j++;
+				double dist = SimilarityFunctions::euclideanDistance(normalizedData[pointIndex], centroids_[centroidIndex]);
+				if (dist < cluster_labels[i].second)
+				{
+					cluster_labels[pointIndex] = { centroidIndex, dist };
+				}
 			}
 		}
-		/*
-		std::vector<double> cluster_indices;
-		for (int i = 0; i < numClusters_; i++)
-		{
-			cluster_indices.push_back()
-		}
-		*/
 		
+	
+		std::vector<std::vector<double>> new_cluster_labels(numClusters_, std::vector<double>(data[0].size(), 0));
+
+		for (int i = 0; i < normalizedData.size(); i++)
+		{
+			int closestIndex = cluster_labels[i].first;
+
+			for (int distIterator = 0; distIterator < normalizedData[0].size(); distIterator++)
+			{
+				new_cluster_labels[closestIndex][distIterator] += normalizedData[i][distIterator];
+			}
+		}
+
+		
+
+
 	}
 
 	
