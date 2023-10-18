@@ -114,6 +114,27 @@ void FuzzyCMeans::updateMembershipMatrix(const std::vector<std::vector<double>>&
 	
 	for (size_t i = 0; i < data.size(); ++i) 
 	{
+
+		std::vector<double>distances;
+		for (int j = 0; j < numClusters_; j++)
+		{
+			double distance = SimilarityFunctions::euclideanDistance(data[i], centroids_[j]);
+			distances.push_back(distance);
+		}
+
+		double membershipValue = 0;
+		for (int j = 0; j < numClusters_; j++)
+		{
+			double membershipValue = 0;
+			for (int k = 0; k < numClusters_; k++)
+			{
+				membershipValue += std::pow(distances[j], 2) / pow (distances[k], 2);
+			}
+			membershipValue = pow(membershipValue, 1 / fuzziness_ - 1);
+			membershipValue = pow(membershipValue, -1);
+			membershipMatrix_[i][j] = membershipValue;
+		}
+		/*
 		for (size_t j = 0; j < numClusters_; ++j) 
 		{
 			double distanceToCurrent = SimilarityFunctions::euclideanDistance(data[i], centroids_[j]);
@@ -134,6 +155,7 @@ void FuzzyCMeans::updateMembershipMatrix(const std::vector<std::vector<double>>&
 		for (size_t j = 0; j < numClusters_; ++j) {
 			membershipMatrix_[i][j] /= sumMembership;
 		}
+		*/
 	}
 	
 	/* Implement the following:
@@ -154,6 +176,8 @@ std::vector<std::vector<double>> FuzzyCMeans::updateCentroids(const std::vector<
 	std::vector<std::vector<double>> newCentroids(numClusters_, std::vector<double>(data[0].size(), 0.0));
 
 	for (size_t j = 0; j < numClusters_; ++j) {
+		
+		
 		for (size_t d = 0; d < data[0].size(); ++d) {
 			double numerator = 0.0;
 			double denominator = 0.0;
@@ -186,23 +210,51 @@ std::vector<int> FuzzyCMeans::predict(const std::vector<std::vector<double>>& da
 	std::vector<int> labels; // Create a vector to store the labels
 	labels.reserve(data.size()); // Reserve space for the labels
 
+
+	
+
 	for (const auto& point : data) {
-		int closestCentroidIndex = -1; // Index of the closest centroid
-		double maxMembership = -1.0;
+		int closestCentroid = -1; // Initialize the closest centroid to an invalid value
+		double minDistance = DBL_MAX; // Initialize the minimum distance to the maximum possible value
 
 		for (size_t i = 0; i < numClusters_; ++i) {
-			double membership = calculateMembership(point, centroids_[i]);
-			if (membership > maxMembership) {
-				maxMembership = membership;
-				closestCentroidIndex = static_cast<int>(i);
+			double distance = SimilarityFunctions::euclideanDistance(point, centroids_[i]); // Calculate the Euclidean distance between the point and the centroid
+			if (distance < minDistance) {
+				minDistance = distance;
+				closestCentroid = static_cast<int>(i); // Update the closest centroid index
 			}
 		}
 
-		// Add the label of the closest centroid to the labels vector
-		labels.push_back(closestCentroidIndex+1);
+		labels.push_back(closestCentroid + 1); // Add the closest centroid to the labels vector
 	}
 
-	return labels; // Return the labels vector
+	return labels;
+	/*
+	int closestCentroidIndex = -1;
+	double maxmembership = -1.0;
+	for (int i = 0; i < data.size(); i++)
+	{
+		
+		int closestCentroidIndex = -1;
+		double maxmembership = -1.0;
+		for (int j = 0; j < numClusters_; j++)
+		{
+			if (membershipMatrix_[i][j] > maxmembership)
+			{
+				maxmembership = membershipMatrix_[i][j];
+				closestCentroidIndex = j;
+				
+			}
+				
+		}
+		labels.push_back(closestCentroidIndex + 1);
+	}
+
+	return labels;
+	*/
+	
+
+	
 }
 
 	/* Implement the following:
