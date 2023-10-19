@@ -161,14 +161,7 @@ std::vector<int> KMeans::predict(const std::vector<std::vector<double>>& data) c
 }
 
 
-/* Implement the following:
-	--- Initialize the closest centroid and minimum distance to the maximum possible value
-	--- Iterate through each centroid
-	--- Calculate the Euclidean distance between the point and the centroid
-	--- Add the closest centroid to the labels vector
-*/
 
-// TODO
 
 
 bool KMeans::areCentroidsEqual(const std::vector<std::vector<double>>& centroids1, const std::vector<std::vector<double>>& centroids2) const {

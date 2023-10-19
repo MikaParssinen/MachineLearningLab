@@ -434,16 +434,16 @@ std::tuple<double, double, double, double, double, double,
         DataPreprocessor::splitDataset(dataset, trainRatio, trainData, trainLabels, testData, testLabels);
 		
         //First fit function call
-        fit(trainData, trainLabels);
+        //fit(trainData, trainLabels);
        
-        //fit(trainData, trainLabels, 5000, 0.07);
+        fit(trainData, trainLabels, 100, 0.001);
 
         //Second predict function call
-        //std::vector<double> testPredictions = predict(testData, 0);
+        std::vector<double> testPredictions = predict(testData, 0);
 
 
         // Make predictions on the test data
-        std::vector<double> testPredictions = predict(testData);
+       // std::vector<double> testPredictions = predict(testData);
 
         // Calculate evaluation metrics (e.g., MAE, MSE)
         double test_mae = Metrics::meanAbsoluteError(testLabels, testPredictions);
@@ -451,10 +451,10 @@ std::tuple<double, double, double, double, double, double,
         double test_rsquared = Metrics::rSquared(testLabels, testPredictions);
 
         //Second predict function call
-        //std::vector<double> trainPredictions = predict(trainData, 0);
+        std::vector<double> trainPredictions = predict(trainData, 0);
 
         // Make predictions on the training data
-        std::vector<double> trainPredictions = predict(trainData);
+        //std::vector<double> trainPredictions = predict(trainData);
 
         // Calculate evaluation metrics for training data
         double train_mae = Metrics::meanAbsoluteError(trainLabels, trainPredictions);

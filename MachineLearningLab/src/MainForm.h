@@ -1559,7 +1559,7 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			if (algorithmIndex == 0) {
 				// K-Means Clustering//
 				int numClusters = 3;
-				int maxIterations = 10000;
+				int maxIterations = 10;
 				KMeans kmeans(numClusters, maxIterations);
 
 				// Evaluation //
@@ -1584,9 +1584,9 @@ private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 			}
 			else if (algorithmIndex == 1) {
 				// FuzzyCMeans Clustering//
-				int numClusters = 3; // Set the number of clusters
-				int maxIterations = 10; // Set the maximum number of iterations
-				double fuzziness = 2.0; // Set the fuzziness parameter
+				int numClusters = 6; // Set the number of clusters
+				int maxIterations = 1000 ; // Set the maximum number of iterations
+				double fuzziness = 3.0; // Set the fuzziness parameter
 				FuzzyCMeans fcm(numClusters, maxIterations, fuzziness);
 			
 
