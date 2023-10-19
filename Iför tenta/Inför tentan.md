@@ -70,3 +70,54 @@ Det är nästan samma sak förutom att vi räknar ut medelvärdet av de närmast
 • Icke-parametrisk natur: Till skillnad från andra regressionsalgoritmer ger kNN regression inte en modell som kan användas för att göra förutsägelser för nya datapunkter. Varje gång beräknar den avståndet och ger sedan resultatet. Detta kan göra det svårare att tolka resultaten och förstå relationerna mellan egenskaperna och målvariablerna.
 
 • Inte lämplig för stora datamängder med många funktioner: kNN kan bli beräkningsmässigt olämplig för datamängder med många funktioner och datapunkter. I dessa fall kan du använda algoritmer som multipel regression eller polynomisk regression.
+
+
+## Clustering
+
+Klustring är ett sätt att gruppera en mängd av objekt till klasser av liknande objekt. I en kluster ska alla objekt inom den klustern vara liknande, objekt från andra klusters ska vara olika.
+
+Det är den vanligaste formen av oövervakadlärning och väldigt användbar när du inte vet vad du letar efter.
+
+Målet är att varje datapunkt som beskrivs av sinna attribut ska hitta sin kluster och maximera inter cluster likhet och minimera intra kluster likhet.
+
+Alltså maximera sin distans ifrån andra klusters och minimera sina avstånd i sin kluster.
+
+Det finns två olika typer av klustering, Hierkisk algoritmer och partitiell algoritmer
+Hiearkisk är baserat på hur datat är länkat.
+Partitiell är baserat på hur mitt ser ut
+
+#### K-Means 
+Vi vill hitta clusters som är minst kostsamma, i praktiken är det upp till användaren att välja bästa nummer av klusters.
+
+1. Bestäm hyperparametern k 
+2. Välj ut cetroiderna helt random
+3. För varje datapoint, hitta cetroiden den är närmast till (genom eculidian) och tilldela den data punkten den klustern.
+4. Räkna om cetroiderna(medelvärdet av alla datapunkter som tillhör den klustern)
+5. Sluta när vi når konvergens
+
+
+
+
+
+
+## Linear regression
+Den är parametrisk, vilket kNN inte är.
+
+Skillnaden mellan gradient decent och matris form: 
+**Gradient:** 
+1. Behöver välja learing rate
+2. Behöver många itterationer
+3. Fungerar bra för stora datamängder
+
+**Matris**: 
+1. Behöver inte learing rate
+2. Behöver ingen itteration
+3. Väldigt **långsam** om vi har stor datamängd
+4. Ordo(n^3)
+
+**Problem med Linear regression:**
+1. Om egenskaperna påverkar varandra får vi ett, **Underfitting problem**.
+2. Om egenskaperna är större än antalet datamängd så får vi, **Overfitting problem**.
+
+**Regularisering**
+Vi tar ett värde som verkar vara jättelångt bort och lägger den närmare resten av datat eftersom et inte spelar någon roll. Vi krymper alltså datat.
