@@ -60,11 +60,12 @@ void FuzzyCMeans::fit(const std::vector<std::vector<double>>& data) {
 	while (centroidsChanged && iter < maxIterations_) {
 		std::vector<std::vector<double>> oldCentroids = centroids_;
 
+		// Update centroids based on fuzzy memberships
+		updateCentroids(normalizedData);
+
 		// Perform Fuzzy C-means clustering
 		updateMembershipMatrix(normalizedData, centroids_);
 
-		// Update centroids based on fuzzy memberships
-		updateCentroids(normalizedData);
 
 		// Check for convergence
 		centroidsChanged = !areCentroidsEqual(oldCentroids, centroids_);
@@ -130,10 +131,11 @@ void FuzzyCMeans::updateMembershipMatrix(const std::vector<std::vector<double>>&
 			{
 				membershipValue += std::pow(distances[j], 2) / pow (distances[k], 2);
 			}
-			membershipValue = pow(membershipValue, 1 / fuzziness_ - 1);
+			membershipValue = pow(membershipValue, 1 / (fuzziness_ - 1));
 			membershipValue = pow(membershipValue, -1);
 			membershipMatrix_[i][j] = membershipValue;
 		}
+	}
 		/*
 		for (size_t j = 0; j < numClusters_; ++j) 
 		{
@@ -156,7 +158,6 @@ void FuzzyCMeans::updateMembershipMatrix(const std::vector<std::vector<double>>&
 			membershipMatrix_[i][j] /= sumMembership;
 		}
 		*/
-	}
 	
 	/* Implement the following:
 		---	Iterate through each data point
@@ -171,9 +172,9 @@ void FuzzyCMeans::updateMembershipMatrix(const std::vector<std::vector<double>>&
 
 
 // updateCentroids function: Updates the centroids of the Fuzzy C-Means algorithm.//
-std::vector<std::vector<double>> FuzzyCMeans::updateCentroids(const std::vector<std::vector<double>>& data) {
+void FuzzyCMeans::updateCentroids(const std::vector<std::vector<double>>& data) {
 	
-	std::vector<std::vector<double>> newCentroids(numClusters_, std::vector<double>(data[0].size(), 0.0));
+
 
 	for (size_t j = 0; j < numClusters_; ++j) {
 		
@@ -188,7 +189,7 @@ std::vector<std::vector<double>> FuzzyCMeans::updateCentroids(const std::vector<
 				denominator += membershipPow;
 			}
 
-			newCentroids[j][d] = numerator / denominator;
+			centroids_[j][d] = numerator / denominator;
 		}
 	}
 	
@@ -199,9 +200,7 @@ std::vector<std::vector<double>> FuzzyCMeans::updateCentroids(const std::vector<
 	*/
 	
 	// TODO
-
-
-	return centroids_; // Return the centroids
+	// Return the centroids
 }
 
 
@@ -225,7 +224,7 @@ std::vector<int> FuzzyCMeans::predict(const std::vector<std::vector<double>>& da
 			}
 		}
 
-		labels.push_back(closestCentroid + 1); // Add the closest centroid to the labels vector
+		labels.push_back(closestCentroid + 1 ); // Add the closest centroid to the labels vector
 	}
 
 	return labels;
@@ -290,6 +289,7 @@ bool FuzzyCMeans::areCentroidsEqual(const std::vector<std::vector<double>>& cent
 		return false;
 
 	for (size_t i = 0; i < centroids1.size(); ++i) {
+
 		if (centroids1[i] != centroids2[i])
 			return false;
 	}
