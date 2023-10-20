@@ -17,32 +17,11 @@
 
 using namespace System::Windows::Forms; // For MessageBox
 
-
-                                            ///  LogisticRegression class implementation  ///
-// Constractor
-
+///  LogisticRegression class implementation  ///
+// Constructor
 LogisticRegression::LogisticRegression(double learning_rate, int num_epochs)
     : learning_rate(learning_rate), num_epochs(num_epochs) {}
 
-// Fit method for training the logistic regression model
-//void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& y_train) {
-//    int num_features = X_train[0].size();
-//    int num_classes = std::set<double>(y_train.begin(), y_train.end()).size();
-//
-//
-//	/* Implement the following:
-//       	--- Initialize weights for each class
-//    	--- Loop over each class label
-//    	--- Convert the problem into a binary classification problem
-//        --- Loop over training epochs
-//       	--- Add bias term to the training example
-//    	--- Calculate weighted sum of features
-//        --- Calculate the sigmoid of the weighted sum
-//        --- Update weights using gradient descent
-//    */
-//    
-//    // TODO
-//}
 
 void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, const std::vector<double>& y_train) {
     int num_samples = X_train.size();
@@ -63,28 +42,32 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X_train, co
                 std::vector<double> input_with_bias = X_train[samples];
                 input_with_bias.push_back(1.0); // Adding bias
                 double weighted_sum = weight_vector[0];
-
+                
+                // Calculate the weighted sum of inputs and weights
                 for (int features = 0; features < num_features; features++)
                 {
-                    weighted_sum += weight_vector[features + 1] * input_with_bias[features];
+                    weighted_sum += weight_vector[features + 1] * input_with_bias[features]; 
                 }
 
                 // Calculate the sigmoid of the weighted sum
-                double sigmoid_result = sigmoid(weighted_sum);
+                double sigmoid_result = sigmoid(weighted_sum);  
 
-                double error = sigmoid_result - y_binary;
+                // Error for the current sample
+                double error = sigmoid_result - y_binary; 
+                
+                // Derivative of bias is 1
+                Gradient_vector[0] += error * 1.0; 
 
-                Gradient_vector[0] += error * 1.0; //Form av derivata
-
-                for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++)
+                for (int gradient_calc = 0; gradient_calc < num_features; gradient_calc++) 
                 {
-                    Gradient_vector[gradient_calc + 1] += error * input_with_bias[gradient_calc];
+                    Gradient_vector[gradient_calc + 1] += error * input_with_bias[gradient_calc]; // Derivative of weight is input
                 }
 
             }
 
             for (int w = 0; w <= num_features; w++)
-            {
+            { 
+                // Update weights
                 weight_vector[w] -= learning_rate * (Gradient_vector[w] / num_samples);
 
             }
@@ -100,9 +83,7 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
     std::vector<double> predictions;
 
     for (const auto& input : X_test) {
-        //std::vector<double> input_with_bias = input;
-        //input_with_bias.push_back(1.0); // Adding bias
-
+    
         // Initialize max_score and predicted_class appropriately for each input
         double max_score = -std::numeric_limits<double>::infinity();
         int predicted_class = -1;
@@ -120,7 +101,6 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
                 max_score = score;
                 predicted_class = static_cast<int>(c+1);  // Convert size_t to int
                 
-                
             }
         }
 
@@ -130,23 +110,6 @@ std::vector<double> LogisticRegression::predict(const std::vector<std::vector<do
     return predictions;
 }
 
-
-//
-//// Predict method to predict class labels for test data
-//std::vector<double> LogisticRegression::predict(const std::vector<std::vector<double>>& X_test) {
-//    std::vector<double> predictions;
-//    
-//    /* Implement the following:
-//    	--- Loop over each test example
-//        --- Add bias term to the test example
-//        --- Calculate scores for each class by computing the weighted sum of features
-//        --- Predict class label with the highest score
-//    */
-//      
-//    // TODO
-//    
-//    return predictions;
-//}
 
 /// runLogisticRegression: this function runs the logistic regression algorithm on the given dataset and 
 /// then returns a tuple containing the evaluation metrics for the training and test sets, 
