@@ -69,28 +69,18 @@ bool DecisionTreeClassification::allSamplesHaveSameClass(std::vector<double>& y)
 
 
 Node* DecisionTreeClassification::growTree(std::vector<std::vector<double>>& X, std::vector<double>& y, int depth) {
-	
-	
-	//STEG 1
-	
 	// Define stopping criteria
-	// Kontrollera om vi n�tt maximalt djup eller antalet prov �r f�r f�
+	// If all samples have the same label, return a leaf node.
 	if (depth >= max_depth || X.size() < min_samples_split || allSamplesHaveSameClass(y) == true ) {
 		return new Node(-1, -1, nullptr, nullptr, mostCommonLabel(y)); //Skapar lövnod som representerar den mest förekommande etikett.
 	}
 
-
-	//STEG 2:
-
 	double best_gain = -1.0; 
 	int split_idx = -1;
 	double split_thresh = -1.0;
-
-
-
+	
 	// Loop through candidate features and potential split thresholds.
 	
-	// Loopa igenom varje attribut/längd/egenskap och hitta b�sta uppdelning
 	for (int i = 0; i < X[0].size(); ++i) {
 		std::vector<double> X_column;
 		for (int k = 0; k < X.size(); ++k) {
@@ -169,38 +159,21 @@ double DecisionTreeClassification::informationGain(std::vector<double>& y, std::
 	return information_gain; // Return the information gain
 }
 
-/// informationGain function: Calculates the information gain of a given split threshold for a given feature column.
-//double DecisionTreeClassification::informationGain(std::vector<double>& y, std::vector<double>& X_column, double split_thresh) {
-//	//parent loss // You need to caculate entropy using the EntropyFunctions class//
-//	double parent_entropy = EntropyFunctions::entropy(y);
-//
-//	/* Implement the following:
-//	   --- generate split
-//	   --- compute the weighted avg. of the loss for the children
-//	   --- information gain is difference in loss before vs. after split	
-//	*/
 
-//	double infogain = 0.0;
-//	
-//	// TODO
-
-//	return infogain;
-
-//}
 
 // mostCommonlLabel function: Finds the most common label in a vector of labels.//
 double DecisionTreeClassification::mostCommonLabel(std::vector<double>& y) {
 	std::unordered_map<double, int> label_counts;
 
-	// R�kna f�rekomst av varje klass
+	// Count the number of times each label occurs in the vector
 	for (const double& label : y) {
 		label_counts[label]++;
 	}
 
-	double most_common = -1;  // Initialisera med ogiltig v�rde
+	double most_common = -1;  // Initialize the most common label with a false value
 	int max_count = 0;
 
-	// Hitta den mest f�rekommande klassen
+	// Find the most common label
 	for (const auto& pair : label_counts) {
 		if (pair.second > max_count) {
 			max_count = pair.second;
@@ -231,22 +204,6 @@ double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* no
 		return traverseTree(x, node->right);
 	}
 }
-
-
-
-// traverseTree  function: Traverses a decision tree given an input vector and a node.//
-//double DecisionTreeClassification::traverseTree(std::vector<double>& x, Node* node) {
-//
-//	/* Implement the following:
-//		--- If the node is a leaf node, return its value
-//		--- If the feature value of the input vector is less than or equal to the node's threshold, traverse the left subtree
-//		--- Otherwise, traverse the right subtree
-//	*/
-//	 //TODO
-//	
-//	return 0.0;
-//}
-
 
 /// runDecisionTreeClassification: this function runs the decision tree classification algorithm on the given dataset and 
 /// then returns a tuple containing the evaluation metrics for the training and test sets, 
